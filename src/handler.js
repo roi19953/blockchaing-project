@@ -197,7 +197,7 @@ class XOHandler extends TransactionHandler {
         }
 
         let playerString = player.toString().substring(0, 6);
-
+        console.log('asdfasdfasdfasdf')
         _display(
           `Player ${playerString} takes two spacesssssssssss space: ${payload.space}\n\n` +
             _gameToStr(
