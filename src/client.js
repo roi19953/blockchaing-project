@@ -78,6 +78,7 @@ const createBatch = (transactions) => {
 
 /* This batch creates a new game */
 const batchToSend = createBatch([createTransaction(`GameName,create,0`)]);
+console.log("enter here")
 
 const batchListBytes = protobuf.BatchList.encode({
   batches: [batchToSend],
