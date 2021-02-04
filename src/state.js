@@ -115,7 +115,7 @@ module.exports = {
 
 const _deserialize = (data) => {
   console.log('data begin---')
-  console.log(data)
+  console.log(data.split("|"))
   console.log('data end---')
   let gamesIterable = data
     .split("|")
