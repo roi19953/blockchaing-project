@@ -199,7 +199,7 @@ class XOHandler extends TransactionHandler {
         let playerString = player.toString().substring(0, 6);
 
         _display(
-          `Player ${playerString} takes space: ${payload.space}\n\n` +
+          `Player ${playerString} takes two spacesssssssssss space: ${payload.space}\n\n` +
             _gameToStr(
               game.board,
               game.state,
