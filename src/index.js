@@ -18,7 +18,7 @@
 "use strict";
 
 const { TransactionProcessor } = require("sawtooth-sdk/processor");
-const XOHandler = require("./handler");
+const XOHandler = require("./handler2");
 
 if (process.argv.length < 3) {
   console.log("missing a validator address");
