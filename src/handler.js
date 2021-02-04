@@ -34,7 +34,7 @@ const _gameToStr = (board, state, player1, player2, name) => {
   out += `STATE: ${state}\n`;
   out += `\n`;
   out += `${board[0]} | ${board[1]} | ${board[2]} \n`;
-  out += `---|---|--- \n`;
+  out += `---|---|-asdfasdfasdfasdfsadfsadfsdfadsfsdafasdfsadfsdafasdfsadfasdf-- \n`;
   out += `${board[3]} | ${board[4]} | ${board[5]} \n`;
   out += `---|---|--- \n`;
   out += `${board[6]} | ${board[7]} | ${board[8]} \n`;
