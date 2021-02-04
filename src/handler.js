@@ -133,7 +133,7 @@ class XOHandler extends TransactionHandler {
         };
 
         _display(
-          `Uber ${player.toString().substring(0, 6)} created ${
+          `Player ${player.toString().substring(0, 6)} created bl;askdlfj;asldkfja;sldkfjas;ldkfjas;dlkfjas;dlkfjas;ldkfjas;ldkfjas;ldkfjas;ldkfjasl;dkfjsaldkfjsdlfkjsdkl ${
             payload.name
           }`
         );
