@@ -169,17 +169,17 @@ class XOHandler extends TransactionHandler {
         } else if (game.player2 === "") {
           game.player2 = player;
         }
-        let boardList = "roy:5@omri:4"
+        let boardList = game.board.split("");
 
         if (boardList[payload.space - 1] !== "-") {
           throw new InvalidTransaction("Invalid Action: Space already taken.");
         }
 
         if (game.state === "P1-NEXT" && player === game.player1) {
-          boardList[payload.space - 1] = "X";
+          boardList[payload.space - 1] = "roy:2";
           game.state = "P2-NEXT";
         } else if (game.state === "P2-NEXT" && player === game.player2) {
-          boardList[payload.space - 1] = "O";
+          boardList[payload.space - 1] = "roy:3";
           game.state = "P1-NEXT";
         } else {
           throw new InvalidTransaction(
