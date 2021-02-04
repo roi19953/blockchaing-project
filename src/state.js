@@ -114,13 +114,13 @@ module.exports = {
 };
 
 const _deserialize = (data) => {
+  print('data:')
+  print(data)
+  print('end data')
   let gamesIterable = data
     .split("|")
     .map((x) => x.split(","))
-    .map((x) => [
-      x[0],
-      { name: x[0], board: x[1], state: x[2], player1: x[3], player2: x[4] },
-    ]);
+    .map((x) => [x[0],{ name: x[0], board: x[1], state: x[2], player1: x[3], player2: x[4] },]);
   return new Map(gamesIterable);
 };
 
