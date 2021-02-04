@@ -25,6 +25,7 @@ const { TransactionHandler } = require("sawtooth-sdk/processor/handler");
 const { InvalidTransaction } = require("sawtooth-sdk/processor/exceptions");
 
 const _gameToStr = (board, state, player1, player2, name) => {
+  console.log('enter herererererere')
   board = board.replace(/-/g, " ");
   board = board.split("");
   let out = "";
