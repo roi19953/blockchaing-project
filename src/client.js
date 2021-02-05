@@ -77,7 +77,7 @@ const createBatch = (transactions) => {
 };
 
 /* This batch creates a new game */
-const batchToSend = createBatch([createTransaction(`TelAviv,createCity,0`)]);
+const batchToSend = createBatch([createTransaction(`TelAviv,createDriver,roy`)]);
 console.log("enterere here")
 
 const batchListBytes = protobuf.BatchList.encode({
