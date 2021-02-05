@@ -131,7 +131,6 @@ const _serialize = (games) => {
     let name = nameGame[0];
     let game = nameGame[1];
     gameStrs.push(
-      // [name, game.drivers, game.state, game.player1, game.player2].join(",")
       [name, game.drivers].join(",")
     );
   }
@@ -140,3 +139,6 @@ const _serialize = (games) => {
 
   return Buffer.from(gameStrs.join("|"));
 };
+
+
+// [name, game.drivers, game.state, game.player1, game.player2].join(",")
