@@ -127,13 +127,12 @@ class XOHandler extends TransactionHandler {
 
         // let createdCity = {
         //   name : payload.name,
-        //   drivers: 'empty',
-        //   costumers: 'empty'
+        //   drivers: 'empty'
         // }
 
         let createdGame = {
           name: payload.name,
-          board: 'sdfsdf',
+          board: 'empty',
           state: "P1-NEXT",
           player1: "",
           player2: "",
@@ -143,7 +142,7 @@ class XOHandler extends TransactionHandler {
           `city ${payload.name} created`
         );
 
-        return xoState.setGame(payload.name, createdGame);
+        return xoState.setGame(payload.name, createdCity);
       });
     } else if (payload.action === "createDriver") {
       return xoState.getGame(payload.name).then((game) => {
