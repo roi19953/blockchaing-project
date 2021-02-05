@@ -125,12 +125,13 @@ const _deserialize = (data) => {
 };
 
 const _serialize = (games) => {
+  console.log('enter serialize')
   let gameStrs = [];
   for (let nameGame of games) {
     let name = nameGame[0];
     let game = nameGame[1];
     gameStrs.push(
-      [name, game.board, game.state, game.player1, game.player2].join(",")
+      [name, game.drivers, game.state, game.player1, game.player2].join(",")
     );
   }
 
