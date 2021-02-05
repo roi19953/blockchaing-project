@@ -218,7 +218,7 @@ class XOHandler extends TransactionHandler {
         //     )
         // );
         game.drivers = payload.space
-        _display(cityToStr(game))
+        _display(`driver ${payload.space} created`)
 
         return xoState.setGame(payload.name, game);
       });
