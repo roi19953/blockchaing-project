@@ -115,6 +115,7 @@ module.exports = {
 
 //change string to object. when you call get game function, you get obejct looks like this {name: telaviv, drivers:empty}
 const _deserialize = (data) => {
+  console.log('enter deserialize')
   // console.log('data begin---')
   // console.log(data.split("|"))
   // console.log('data end---')

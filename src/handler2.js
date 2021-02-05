@@ -151,6 +151,7 @@ class XOHandler extends TransactionHandler {
       });
     } else if (payload.action === "createDriver") {
       return xoState.getGame(payload.name).then((game) => {
+        console.log('enter create driver hanlder')
         // try {
         //   parseInt(payload.space);
         // } catch (err) {
