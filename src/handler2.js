@@ -130,9 +130,9 @@ class XOHandler extends TransactionHandler {
         //   drivers: 'empty'
         // }
 
-        let createdGame = {
+        let createdCity = {
           name: payload.name,
-          board: 'empty',
+          board: 'empty----',
           state: "P1-NEXT",
           player1: "",
           player2: "",
