@@ -125,25 +125,19 @@ class XOHandler extends TransactionHandler {
           throw new InvalidTransaction("Invalid Action: City already exists.");
         }
 
-        let createdCity = {
-          name : payload.name,
-          drivers: 'empty',
-          costumers: 'empty'
-        }
+        // let createdCity = {
+        //   name : payload.name,
+        //   drivers: 'empty',
+        //   costumers: 'empty'
+        // }
 
-        // let createdGame = {
-        //   name: payload.name,
-        //   board: [{
-        //     name: 'roy',
-        //     rating: 5
-        //   },{
-        //     name: 'Omri',
-        //     rating: 5
-        //   }],
-        //   state: "P1-NEXT",
-        //   player1: "",
-        //   player2: "",
-        // };
+        let createdGame = {
+          name: payload.name,
+          board: 'sdfsdf',
+          state: "P1-NEXT",
+          player1: "",
+          player2: "",
+        };
 
         _display(
           `city ${payload.name} created`
