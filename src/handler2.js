@@ -119,27 +119,37 @@ class XOHandler extends TransactionHandler {
     let header = transactionProcessRequest.header;
     let player = header.signerPublicKey;
 
-    if (payload.action === "create") {
+    if (payload.action === "createCity") {
       return xoState.getGame(payload.name).then((game) => {
         if (game !== undefined) {
-          throw new InvalidTransaction("Invalid Action: Game already exists.");
+          throw new InvalidTransaction("Invalid Action: City already exists.");
         }
 
-        let createdGame = {
-          name: payload.name,
-          board: "---------",
-          state: "P1-NEXT",
-          player1: "",
-          player2: "",
-        };
+        let createdCity = {
+          name : payload.name,
+          drivers: 'empty',
+          costumers: 'empty'
+        }
+
+        // let createdGame = {
+        //   name: payload.name,
+        //   board: [{
+        //     name: 'roy',
+        //     rating: 5
+        //   },{
+        //     name: 'Omri',
+        //     rating: 5
+        //   }],
+        //   state: "P1-NEXT",
+        //   player1: "",
+        //   player2: "",
+        // };
 
         _display(
-          `Player ${player.toString().substring(0, 6)} created bl;askdlfj;asldkfja;sldkfjas;ldkfjas;dlkfjas;dlkfjas;ldkfjas;ldkfjas;ldkfjas;ldkfjasl;dkfjsaldkfjsdlfkjsdkl ${
-            payload.name
-          }`
+          `city ${payload.name} created`
         );
 
-        return xoState.setGame(payload.name, createdGame);
+        return xoState.setGame(payload.name, createdCity);
       });
     } else if (payload.action === "createDriver") {
       return xoState.getGame(payload.name).then((game) => {
