@@ -143,7 +143,7 @@ class XOHandler extends TransactionHandler {
           `city ${payload.name} created`
         );
 
-        return xoState.setGame(payload.name, createdCity);
+        return xoState.setGame(payload.name, createdGame);
       });
     } else if (payload.action === "createDriver") {
       return xoState.getGame(payload.name).then((game) => {
