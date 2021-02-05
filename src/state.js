@@ -113,17 +113,22 @@ module.exports = {
   XoState,
 };
 
+//change string to object. when you call get game function, you get obejct looks like this {name: telaviv, drivers:empty}
 const _deserialize = (data) => {
-  console.log('data begin---')
-  console.log(data.split("|"))
-  console.log('data end---')
-  let gamesIterable = data
-    .split("|")
-    .map((x) => x.split(","))
-    .map((x) => [x[0],{ name: x[0], drivers: x[1], state: x[2], player1: x[3], player2: x[4] },]);
-  return new Map(gamesIterable);
+  // console.log('data begin---')
+  // console.log(data.split("|"))
+  // console.log('data end---')
+  let citiesIterable = data.split("|")
+  .map((x) => x.split(","))
+  .map((x) => [x[0],{ name: x[0], drivers: x[1]},])
+  // let gamesIterable = data
+  //   .split("|")
+  //   .map((x) => x.split(","))
+  //   .map((x) => [x[0],{ name: x[0], drivers: x[1], state: x[2], player1: x[3], player2: x[4] },]);
+  return new Map(citiesIterable);
 };
 
+// change object to string. from {name : tel aviv, drivers:empty} to 'telaviv,empty'
 const _serialize = (games) => {
   console.log('enter serialize')
   let gameStrs = [];
@@ -133,7 +138,7 @@ const _serialize = (games) => {
     gameStrs.push(
       [name, game.drivers].join(",")
     );
-  }
+  } 
 
   gameStrs.sort();
 
