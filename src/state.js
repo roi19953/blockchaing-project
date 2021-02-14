@@ -139,6 +139,7 @@ const _serialize = (games) => {
     gameStrs.push(
       [name, game.drivers].join(",")
     );
+    console.log('enter serialize')
   } 
 
   gameStrs.sort();
