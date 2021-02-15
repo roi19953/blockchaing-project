@@ -32,12 +32,25 @@ const _gameToStr = (board, state, player1, player2, name) => {
   out += `PLAYER 1: ${player1.substring(0, 6)}\n`;
   out += `PLAYER 2: ${player2.substring(0, 6)}\n`;
   out += `STATE: ${state}\n`;
+  
+  // out += `\n`;
+  // out += `${board[0]} | ${board[1]} | ${board[2]} \n`;
+  // out += `---|---|--- \n`;
+  // out += `${board[3]} | ${board[4]} | ${board[5]} \n`;
+  // out += `---|---|--- \n`;
+  // out += `${board[6]} | ${board[7]} | ${board[8]} \n`;
+  
   out += `\n`;
-  out += `${board[0]} | ${board[1]} | ${board[2]} \n`;
-  out += `---|---|--- \n`;
-  out += `${board[3]} | ${board[4]} | ${board[5]} \n`;
-  out += `---|---|--- \n`;
-  out += `${board[6]} | ${board[7]} | ${board[8]} \n`;
+  out += `${board[0]} | ${board[1]} | ${board[2]} | ${board[3]} | ${board[4]} \n`;
+  out += `---|---|---|---|--- \n`;
+  out += `${board[5]} | ${board[6]} | ${board[7]} | ${board[8]} | ${board[9]} \n`;
+  out += `---|---|---|---|--- \n`;
+  out += `${board[10]} | ${board[11]} | ${board[12]} | ${board[13]} | ${board[14]} \n`;
+  out += `---|---|---|---|--- \n`;
+  out += `${board[15]} | ${board[16]} | ${board[17]} | ${board[18]} | ${board[19]} \n`;
+  out += `---|---|---|---|--- \n`;
+  out += `${board[20]} | ${board[21]} | ${board[22]} | ${board[23]} | ${board[24]} \n`;
+
   return out;
 };
 
@@ -84,14 +97,26 @@ const _display = (msg) => {
 
 const _isWin = (board, letter) => {
   let wins = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-    [1, 4, 7],
-    [2, 5, 8],
-    [3, 6, 9],
-    [1, 5, 9],
-    [3, 5, 7],
+    // [1, 2, 3],
+    // [4, 5, 6],
+    // [7, 8, 9],
+    // [1, 4, 7],
+    // [2, 5, 8],
+    // [3, 6, 9],
+    // [1, 5, 9],
+    // [3, 5, 7],
+    [1, 2, 3, 4 ,5],
+    [6, 7, 8, 9 ,10],
+    [11, 12, 13, 14 ,15],
+    [16, 17, 18, 19 ,20],
+    [21, 22, 23, 24 ,25],
+    [1, 6, 11, 16 ,21],
+    [2, 7, 12, 17 ,22],
+    [3, 8, 13, 18 ,23],
+    [4, 9, 14, 19 ,24],
+    [5, 10, 15, 20 ,25],
+    [1, 7, 13, 19 ,25],
+    [5, 9, 13, 17 ,21],
   ];
   let win;
   for (let i = 0; i < wins.length; i++) {
@@ -126,7 +151,7 @@ class XOHandler extends TransactionHandler {
 
         let createdGame = {
           name: payload.name,
-          board: "---------",
+          board: "-------------------------", // board initial size
           state: "P1-NEXT",
           player1: "",
           player2: "",
@@ -150,9 +175,12 @@ class XOHandler extends TransactionHandler {
           );
         }
 
-        if (payload.space < 1 || payload.space > 9) {
+
+        // Checking if the data is valid - for example "take 30" isn't valid **********************************************************************
+        if (payload.space < 1 || payload.space > 25) {
           throw new InvalidTransaction("Invalid space " + payload.space);
         }
+        // ****************************************************************************************************************************************
 
         if (game === undefined) {
           throw new InvalidTransaction(
@@ -174,6 +202,9 @@ class XOHandler extends TransactionHandler {
           throw new InvalidTransaction("Invalid Action: Space already taken.");
         }
 
+
+        // Here we insert the data into the board *****************************************************************************
+        
         if (game.state === "P1-NEXT" && player === game.player1) {
           boardList[payload.space - 1] = "X";
           game.state = "P2-NEXT";
@@ -185,6 +216,7 @@ class XOHandler extends TransactionHandler {
             `Not this player's turn: ${player.toString().substring(0, 6)}`
           );
         }
+        // *******************************************************************************************************************
 
         game.board = boardList.join("");
 
