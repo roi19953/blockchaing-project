@@ -77,7 +77,7 @@ const createBatch = (transactions) => {
 };
 
 /* This batch creates a new game */
-const batchToSend = createBatch([createTransaction(`OmriGame,take,3`)]);
+const batchToSend = createBatch([createTransaction(`OmriGame,take,4`)]);
 
 const batchListBytes = protobuf.BatchList.encode({
   batches: [batchToSend],
