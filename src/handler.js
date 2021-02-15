@@ -183,7 +183,7 @@ class XOHandler extends TransactionHandler {
           boardList[payload.space - 1] = "O";
           game.state = "P1-NEXT";
         } else {
-          console.log("state: " + game.state + "player1: " + game.player1 + "player2: " + gmae.player2)
+          console.log("state: " + game.state + "player1: " + game.player1 + "player2: " + game.player2)
           throw new InvalidTransaction(
             `Not this player's turn: ${player.toString().substring(0, 6)}`
           );
