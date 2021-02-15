@@ -23,6 +23,7 @@ const XO_NAMESPACE = _hash(XO_FAMILY).substring(0, 6);
 const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
 
 const createTransaction = (payload) => {
+  console.log(payload);
   const [gameName, action, space] = payload.split(",");
   const encoder = new TextEncoder("utf8");
   const payloadBytes = encoder.encode(payload);
