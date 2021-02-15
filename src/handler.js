@@ -173,6 +173,8 @@ class XOHandler extends TransactionHandler {
         if (boardList[payload.space - 1] !== "-") {
           throw new InvalidTransaction("Invalid Action: Space already taken.");
         }
+/************************************************************************************************ */
+        
 
         if (game.state === "P1-NEXT" && player === game.player1) {
           boardList[payload.space - 1] = "X";
@@ -181,6 +183,7 @@ class XOHandler extends TransactionHandler {
           boardList[payload.space - 1] = "O";
           game.state = "P1-NEXT";
         } else {
+          console.log("state: " + game.state + "player1: " + game.player1 + "player2: " + gmae.player2)
           throw new InvalidTransaction(
             `Not this player's turn: ${player.toString().substring(0, 6)}`
           );
