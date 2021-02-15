@@ -122,9 +122,15 @@ const _isWin = (board, letter) => {
   for (let i = 0; i < wins.length; i++) {
     win = wins[i];
     if (
+      // board[win[0] - 1] === letter &&
+      // board[win[1] - 1] === letter &&
+      // board[win[2] - 1] === letter
+
       board[win[0] - 1] === letter &&
       board[win[1] - 1] === letter &&
-      board[win[2] - 1] === letter
+      board[win[2] - 1] === letter &&
+      board[win[3] - 1] === letter &&
+      board[win[4] - 1] === letter
     ) {
       return true;
     }
