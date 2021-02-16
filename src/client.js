@@ -22,9 +22,19 @@ const XO_FAMILY = "xo";
 const XO_NAMESPACE = _hash(XO_FAMILY).substring(0, 6);
 const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
 
-const createTransaction = (payload) => {
+const createTransaction = (payload,arr) => {
   console.log(payload);
-  const [gameName, action, space] = payload.split(",");
+  const [gameName, action, space , player] = payload.split(",");
+  if (player=="1")
+  {
+    const signerKey = arr[0];
+    const batcherKey = arr[1];
+  }
+  if (player=="2")
+  {
+    const signerKey = arr[2];
+    const batcherKey = arr[3];
+  }
   const encoder = new TextEncoder("utf8");
   const payloadBytes = encoder.encode(payload);
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
@@ -32,11 +42,11 @@ const createTransaction = (payload) => {
     familyVersion: "1.0",
     inputs: [_makeXoAddress(gameName)],
     outputs: [_makeXoAddress(gameName)],
-    signerPublicKey: signer.getPublicKey().asHex(),
+    signerPublicKey: signerKey,
     // In this example, we're signing the batch with the same private key,
     // but the batch can be signed by another party, in which case, the
     // public key will need to be associated with that key.
-    batcherPublicKey: signer.getPublicKey().asHex(),
+    batcherPublicKey: batcherKey,
     // In this example, there are no dependencies.  This list should include
     // an previous transaction header signatures that must be applied for
     // this transaction to successfully commit.
@@ -78,15 +88,39 @@ const createBatch = (transactions) => {
 };
 
 /* This batch creates a new game */
-var MyArgs = process.argv.slice(2).toString(); 
-const batchToSend = createBatch([createTransaction(MyArgs)]);
+var input = ""
+while(input != "stop"){ 
+input = getInput();
+
+const privateKey1 = context.newRandomPrivateKey();
+const cryptoFact1 = new CryptoFactory(context);
+const signer1 = cryptoFact1.newSigner(privateKey1);
+const signerPublicKey1 = signer1.getPublicKey().asHex();
+const batcherPublicKey1 = signer1.getPublicKey().asHex();
+
+const privateKey2 = context.newRandomPrivateKey();
+const cryptoFact2 = new CryptoFactory(context);
+const signer2 = cryptoFact2.newSigner(privateKey2);
+const signerPublicKey2 = signer2.getPublicKey().asHex();
+const batcherPublicKey2 = signer2.getPublicKey().asHex();
+
+const arr = [signerPublicKey1,batcherPublicKey1,signerPublicKey2,batcherPublicKey2];
+
+
+// input = process.argv.slice(2).toString();  
+if(input == "player1")
+const batchToSend = createBatch([createTransaction(input,arr);
+if(input == "player2")
+const batchToSend = createBatch([createTransaction(input,arr)]);
 
 const batchListBytes = protobuf.BatchList.encode({
-
   batches: [batchToSend],
 }).finish();
+asyncCall(batchListBytes);
+}
 
-(async function () {
+
+async function asyncCall(batchListBytes) {
   if (batchListBytes == null) {
     try {
       var geturl = "http://localhost:8008/state/" + this.address; //endpoint used to retrieve data from an address in Sawtooth blockchain
@@ -114,4 +148,4 @@ const batchListBytes = protobuf.BatchList.encode({
       console.log("error in fetch", error);
     }
   }
-})();
+};
