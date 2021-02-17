@@ -26,7 +26,8 @@ const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
 
 const createTransaction = (payload,arr) => {
   console.log(payload);
-  const [gameName, action, space , player] = payload.split(",");
+  var player = 1
+  const [gameName, action, space] = payload.split(",");
   console.log('gamename is : ' + gameName)
   console.log('action is : ' + action)
   console.log('space is : ' + space)
@@ -161,7 +162,7 @@ async function main_func() {
   }
   input = await askQuestion("enter command :")
     const arr = [signerPublicKey1,batcherPublicKey1,signerPublicKey2,batcherPublicKey2];
-    const batchToSend = createBatch([createTransaction(input,arr)]);
+    const batchToSend = createBatch([createTransaction("game1,create,0",arr)]);
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();
