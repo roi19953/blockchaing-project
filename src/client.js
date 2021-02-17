@@ -94,11 +94,11 @@ const createTransaction = (payload, signer) => {
     familyVersion: "1.0",
     inputs: [_makeXoAddress(gameName)],
     outputs: [_makeXoAddress(gameName)],
-    signerPublicKey: signerKey,
+    signerPublicKey: signer.getPublicKey().asHex(),
     // In this example, we're signing the batch with the same private key,
     // but the batch can be signed by another party, in which case, the
     // public key will need to be associated with that key.
-    batcherPublicKey: batcherKey,
+    batcherPublicKey: signer.getPublicKey().asHex(),
     // In this example, there are no dependencies.  This list should include
     // an previous transaction header signatures that must be applied for
     // this transaction to successfully commit.
