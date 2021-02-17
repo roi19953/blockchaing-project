@@ -7,6 +7,8 @@ const { TextEncoder, TextDecoder } = require("text-encoding/lib/encoding");
 const privateKey = context.newRandomPrivateKey();
 const cryptoFact = new CryptoFactory(context);
 const signer = cryptoFact.newSigner(privateKey);
+var prompt = require('prompt');
+ 
 
 const XoPayload = require("./payload");
 
