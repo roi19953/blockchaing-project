@@ -12,6 +12,18 @@ const readline = require('readline');
 
 const XoPayload = require("./payload");
 
+const privateKey1 = context.newRandomPrivateKey();
+const cryptoFact1 = new CryptoFactory(context);
+const signer1 = cryptoFact1.newSigner(privateKey1);
+const signerPublicKey1 = signer1.getPublicKey().asHex();
+const batcherPublicKey1 = signer1.getPublicKey().asHex();
+
+const privateKey2 = context.newRandomPrivateKey();
+const cryptoFact2 = new CryptoFactory(context);
+const signer2 = cryptoFact2.newSigner(privateKey2);
+const signerPublicKey2 = signer2.getPublicKey().asHex();
+const batcherPublicKey2 = signer2.getPublicKey().asHex();
+
 const _hash = (x) =>
   crypto
     .createHash("sha512")
@@ -24,7 +36,7 @@ const XO_FAMILY = "xo";
 const XO_NAMESPACE = _hash(XO_FAMILY).substring(0, 6);
 const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
 
-const createTransaction = (payload) => {
+const createTransaction = (payload, arr) => {
   console.log(payload);
   var player = 1
   const [gameName, action, space] = payload.split(",");
@@ -34,6 +46,8 @@ const createTransaction = (payload) => {
   console.log('player is : ' + player)
   payload = gameName+','+action+','+space
   console.log('payload is : ' + payload)
+    var signerKey = arr[0];
+    var batcherKey = arr[1];
   // if (player=="1")
   // {
   //   var signerKey = arr[0];
@@ -44,8 +58,8 @@ const createTransaction = (payload) => {
   //   var signerKey = arr[2];
   //   var batcherKey = arr[3];
   // }
-  // console.log('signer is : ' + signerKey)
-  // console.log('batcherKey is : ' + batcherKey)
+  console.log('signer is : ' + signerKey)
+  console.log('batcherKey is : ' + batcherKey)
   const encoder = new TextEncoder("utf8");
   const payloadBytes = encoder.encode(payload);
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
@@ -53,11 +67,11 @@ const createTransaction = (payload) => {
     familyVersion: "1.0",
     inputs: [_makeXoAddress(gameName)],
     outputs: [_makeXoAddress(gameName)],
-    signerPublicKey: signer.getPublicKey().asHex(),
+    signerPublicKey: signerKey,
     // In this example, we're signing the batch with the same private key,
     // but the batch can be signed by another party, in which case, the
     // public key will need to be associated with that key.
-    batcherPublicKey: signer.getPublicKey().asHex(),
+    batcherPublicKey: batcherKey,
     // In this example, there are no dependencies.  This list should include
     // an previous transaction header signatures that must be applied for
     // this transaction to successfully commit.
@@ -130,18 +144,6 @@ async function asyncCall(batchListBytes) {
 };
 
 
-const privateKey1 = context.newRandomPrivateKey();
-const cryptoFact1 = new CryptoFactory(context);
-const signer1 = cryptoFact1.newSigner(privateKey1);
-const signerPublicKey1 = signer1.getPublicKey().asHex();
-const batcherPublicKey1 = signer1.getPublicKey().asHex();
-
-const privateKey2 = context.newRandomPrivateKey();
-const cryptoFact2 = new CryptoFactory(context);
-const signer2 = cryptoFact2.newSigner(privateKey2);
-const signerPublicKey2 = signer2.getPublicKey().asHex();
-const batcherPublicKey2 = signer2.getPublicKey().asHex();
-
 
 
 async function main_func() {
@@ -162,7 +164,7 @@ async function main_func() {
   }
   input = await askQuestion("enter command :")
     const arr = [signerPublicKey1,batcherPublicKey1,signerPublicKey2,batcherPublicKey2];
-    const batchToSend = createBatch([createTransaction("game3,create,0")]);
+    const batchToSend = createBatch([createTransaction("game3,create,0", arr)]);
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();
