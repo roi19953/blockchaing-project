@@ -93,6 +93,7 @@ const createBatch = (transactions) => {
 prompt.start();
 var input = ""
 while(input != "stop"){ 
+    yield sleep(10000);
     prompt.get(['command'], function (err, result) {
       console.log('Command-line input received:');
       thisResult = result.command
