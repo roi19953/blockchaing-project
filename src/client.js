@@ -162,7 +162,7 @@ async function main_func() {
   }
   input = await askQuestion("enter command :")
     const arr = [signerPublicKey1,batcherPublicKey1,signerPublicKey2,batcherPublicKey2];
-    const batchToSend = createBatch([createTransaction("game1,create,0",arr)]);
+    const batchToSend = createBatch([createTransaction("game3,create,0",arr)]);
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();
