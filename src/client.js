@@ -7,17 +7,21 @@ const { TextEncoder, TextDecoder } = require("text-encoding/lib/encoding");
 const readline = require('readline');
 const XoPayload = require("./payload");
 
-// const privateKey1 = context.newRandomPrivateKey();
-// const cryptoFact1 = new CryptoFactory(context);
-// const signer1 = cryptoFact1.newSigner(privateKey1);
-// const signerPublicKey1 = signer.getPublicKey().asHex();
-// const batcherPublicKey1 = signer.getPublicKey().asHex();
+var privateKey = context.newRandomPrivateKey();
+var cryptoFact = new CryptoFactory(context);
+var signer = cryptoFact.newSigner(privateKey);
+var signerPublicKey = signer.getPublicKey().asHex();
+var batcherPublicKey = signer.getPublicKey().asHex();
 
-// const privateKey2 = context2.newRandomPrivateKey();
-// const cryptoFact2 = new CryptoFactory(context2);
-// const signer2 = cryptoFact2.newSigner(privateKey2);
-// const signerPublicKey2 = signer2.getPublicKey().asHex();
-// const batcherPublicKey2 = signer2.getPublicKey().asHex();
+var newArr1 = [signerPublicKey,batcherPublicKey]
+
+privateKey = context.newRandomPrivateKey();
+cryptoFact = new CryptoFactory(context);
+signer = cryptoFact.newSigner(privateKey);
+signerPublicKey = signer.getPublicKey().asHex();
+batcherPublicKey = signer.getPublicKey().asHex();
+
+var newArr2 = [signerPublicKey,batcherPublicKey]
 
 function createKey1() {
   const context = createContext("secp256k1");
@@ -176,9 +180,9 @@ async function main_func() {
   input = await askQuestion("enter command :")
     var key1 = createKey1();
     var key2 = createKey1();
-    const arr = [key1,key2];
+    const arr = [signerPublicKey,batcherPublicKey];
     // const arr = [signerPublicKey1,batcherPublicKey1];
-    const batchToSend = createBatch([createTransaction("game3,create,0", arr)]);
+    const batchToSend = createBatch([createTransaction("game3,create,0", newArr1)]);
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();
