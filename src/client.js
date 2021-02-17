@@ -151,8 +151,7 @@ async function main_func() {
           resolve(ans);
       }))
   }
-  input = await askQuestion("enter command")
-  console.log('input is ' + input)
+  input = await askQuestion("enter command/n")
     const arr = [signerPublicKey1,batcherPublicKey1,signerPublicKey2,batcherPublicKey2];
     const batchToSend = createBatch([createTransaction(input,arr)]);
     const batchListBytes = protobuf.BatchList.encode({
