@@ -34,16 +34,16 @@ const createTransaction = (payload) => {
   console.log('player is : ' + player)
   payload = gameName+','+action+','+space
   console.log('payload is : ' + payload)
-  if (player=="1")
-  {
-    var signerKey = arr[0];
-    var batcherKey = arr[1];
-  } 
-  else if (player=="2")
-  {
-    var signerKey = arr[2];
-    var batcherKey = arr[3];
-  }
+  // if (player=="1")
+  // {
+  //   var signerKey = arr[0];
+  //   var batcherKey = arr[1];
+  // } 
+  // else if (player=="2")
+  // {
+  //   var signerKey = arr[2];
+  //   var batcherKey = arr[3];
+  // }
   console.log('signer is : ' + signerKey)
   console.log('batcherKey is : ' + batcherKey)
   const encoder = new TextEncoder("utf8");
