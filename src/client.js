@@ -90,6 +90,7 @@ const createBatch = (transactions) => {
 };
 
 /* This batch creates a new game */
+prompt.start();
 var input = ""
 while(input != "stop"){ 
     prompt.get(['command'], function (err, result) {
