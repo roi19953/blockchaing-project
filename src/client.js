@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const { protobuf } = require("sawtooth-sdk");
 const fetch = require("node-fetch");
 const context = createContext("secp256k1");
+const context2 = createContext("secp256k1");
 const { TextEncoder, TextDecoder } = require("text-encoding/lib/encoding");
 const privateKey = context.newRandomPrivateKey();
 const cryptoFact = new CryptoFactory(context);
@@ -18,11 +19,11 @@ const XoPayload = require("./payload");
 const signerPublicKey1 = signer.getPublicKey().asHex();
 const batcherPublicKey1 = signer.getPublicKey().asHex();
 
-// const privateKey2 = context.newRandomPrivateKey();
-// const cryptoFact2 = new CryptoFactory(context);
-// const signer2 = cryptoFact2.newSigner(privateKey2);
-// const signerPublicKey2 = signer2.getPublicKey().asHex();
-// const batcherPublicKey2 = signer2.getPublicKey().asHex();
+const privateKey2 = context2.newRandomPrivateKey();
+const cryptoFact2 = new CryptoFactory(context);
+const signer2 = cryptoFact2.newSigner(privateKey2);
+const signerPublicKey2 = signer2.getPublicKey().asHex();
+const batcherPublicKey2 = signer2.getPublicKey().asHex();
 
 const _hash = (x) =>
   crypto
@@ -46,8 +47,8 @@ const createTransaction = (payload, arr) => {
   console.log('player is : ' + player)
   payload = gameName+','+action+','+space
   console.log('payload is : ' + payload)
-    var signerKey = arr[0];
-    var batcherKey = arr[1];
+    var signerKey = arr[2];
+    var batcherKey = arr[3];
   // if (player=="1")
   // {
   //   var signerKey = arr[0];
@@ -163,8 +164,8 @@ async function main_func() {
       }))
   }
   input = await askQuestion("enter command :")
-    // const arr = [signerPublicKey1,batcherPublicKey1,signerPublicKey2,batcherPublicKey2];
-    const arr = [signerPublicKey1,batcherPublicKey1];
+    const arr = [signerPublicKey1,batcherPublicKey1,signerPublicKey2,batcherPublicKey2];
+    // const arr = [signerPublicKey1,batcherPublicKey1];
     const batchToSend = createBatch([createTransaction("game3,create,0", arr)]);
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
