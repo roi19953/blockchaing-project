@@ -31,6 +31,8 @@ const createTransaction = (payload,arr) => {
   console.log('action is : ' + action)
   console.log('space is : ' + space)
   console.log('player is : ' + player)
+  payload = gameName+','+action+','+space
+  console.log('payload is : ' + payload)
   if (player=="1")
   {
     var signerKey = arr[0];
