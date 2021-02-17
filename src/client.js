@@ -90,33 +90,28 @@ const createBatch = (transactions) => {
 /* This batch creates a new game */
 var input = ""
 while(input != "stop"){ 
-input = getInput();
+  input = getInput();
 
-const privateKey1 = context.newRandomPrivateKey();
-const cryptoFact1 = new CryptoFactory(context);
-const signer1 = cryptoFact1.newSigner(privateKey1);
-const signerPublicKey1 = signer1.getPublicKey().asHex();
-const batcherPublicKey1 = signer1.getPublicKey().asHex();
+  const privateKey1 = context.newRandomPrivateKey();
+  const cryptoFact1 = new CryptoFactory(context);
+  const signer1 = cryptoFact1.newSigner(privateKey1);
+  const signerPublicKey1 = signer1.getPublicKey().asHex();
+  const batcherPublicKey1 = signer1.getPublicKey().asHex();
 
-const privateKey2 = context.newRandomPrivateKey();
-const cryptoFact2 = new CryptoFactory(context);
-const signer2 = cryptoFact2.newSigner(privateKey2);
-const signerPublicKey2 = signer2.getPublicKey().asHex();
-const batcherPublicKey2 = signer2.getPublicKey().asHex();
+  const privateKey2 = context.newRandomPrivateKey();
+  const cryptoFact2 = new CryptoFactory(context);
+  const signer2 = cryptoFact2.newSigner(privateKey2);
+  const signerPublicKey2 = signer2.getPublicKey().asHex();
+  const batcherPublicKey2 = signer2.getPublicKey().asHex();
 
-const arr = [signerPublicKey1,batcherPublicKey1,signerPublicKey2,batcherPublicKey2];
+  const arr = [signerPublicKey1,batcherPublicKey1,signerPublicKey2,batcherPublicKey2];
+  const batchToSend = createBatch([createTransaction(input,arr)]);
 
 
-// input = process.argv.slice(2).toString();  
-if(input == "player1")
-const batchToSend = createBatch([createTransaction(input,arr);
-if(input == "player2")
-const batchToSend = createBatch([createTransaction(input,arr)]);
-
-const batchListBytes = protobuf.BatchList.encode({
-  batches: [batchToSend],
-}).finish();
-asyncCall(batchListBytes);
+  const batchListBytes = protobuf.BatchList.encode({
+    batches: [batchToSend],
+  }).finish();
+  asyncCall(batchListBytes);
 }
 
 
