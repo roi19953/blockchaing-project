@@ -47,8 +47,8 @@ const createTransaction = (payload, arr) => {
   console.log('player is : ' + player)
   payload = gameName+','+action+','+space
   console.log('payload is : ' + payload)
-    var signerKey = arr[2];
-    var batcherKey = arr[3];
+    var signerKey = arr[0];
+    var batcherKey = arr[1];
   // if (player=="1")
   // {
   //   var signerKey = arr[0];
