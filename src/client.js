@@ -43,6 +43,8 @@ const createTransaction = (payload,arr) => {
     var signerKey = arr[2];
     var batcherKey = arr[3];
   }
+  console.log('signer is : ' + signerKey)
+  console.log('batcherKey is : ' + batcherKey)
   const encoder = new TextEncoder("utf8");
   const payloadBytes = encoder.encode(payload);
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
