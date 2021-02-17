@@ -24,7 +24,7 @@ const XO_FAMILY = "xo";
 const XO_NAMESPACE = _hash(XO_FAMILY).substring(0, 6);
 const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
 
-const createTransaction = (payload,arr) => {
+const createTransaction = (payload) => {
   console.log(payload);
   var player = 1
   const [gameName, action, space] = payload.split(",");
@@ -53,11 +53,11 @@ const createTransaction = (payload,arr) => {
     familyVersion: "1.0",
     inputs: [_makeXoAddress(gameName)],
     outputs: [_makeXoAddress(gameName)],
-    signerPublicKey: signerKey,
+    signerPublicKey: signer.getPublicKey().asHex(),
     // In this example, we're signing the batch with the same private key,
     // but the batch can be signed by another party, in which case, the
     // public key will need to be associated with that key.
-    batcherPublicKey: batcherKey,
+    batcherPublicKey: signer.getPublicKey().asHex(),
     // In this example, there are no dependencies.  This list should include
     // an previous transaction header signatures that must be applied for
     // this transaction to successfully commit.
@@ -162,39 +162,11 @@ async function main_func() {
   }
   input = await askQuestion("enter command :")
     const arr = [signerPublicKey1,batcherPublicKey1,signerPublicKey2,batcherPublicKey2];
-    const batchToSend = createBatch([createTransaction("game3,create,0",arr)]);
+    const batchToSend = createBatch([createTransaction("game3,create,0")]);
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();
-    (async function () {
-      if (batchListBytes == null) {
-        try {
-          var geturl = "http://localhost:8008/state/" + this.address; //endpoint used to retrieve data from an address in Sawtooth blockchain
-          console.log("Getting from: " + geturl);
-          let response = await fetch(geturl, {
-            method: "GET",
-          });
-          let responseJson = await response.json();
-          var data = responseJson.data;
-          var newdata = Buffer.from(data, "base64").toString();
-          return newdata;
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        try {
-          let resp = await fetch("http://localhost:8008/batches", {
-            //endpoint to which we write data in a Sawtooth blockchain
-            method: "POST",
-            headers: { "Content-Type": "application/octet-stream" },
-            body: batchListBytes,
-          });
-          console.log("response--", resp);
-        } catch (error) {
-          console.log("error in fetch", error);
-        }
-      }
-    })();
+    await asyncCall(batchListBytes);
   }
 }
 
