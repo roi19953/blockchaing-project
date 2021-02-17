@@ -166,7 +166,6 @@ async function main_func() {
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();
-    console.log('batchlist is ' + batchListBytes)
     (async function () {
       if (batchListBytes == null) {
         try {
