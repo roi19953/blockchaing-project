@@ -189,7 +189,7 @@ async function main_func() {
   input = await askQuestion("enter command :")
     var signer1 = createSigner();
     var signer2 = createSigner();
-    const arr = [signerPublicKey,batcherPublicKey];
+    // const arr = [signerPublicKey,batcherPublicKey];
     // const arr = [signerPublicKey1,batcherPublicKey1];
     const batchToSend = createBatch([createTransaction("game3,create,0", signer1)]);
     const batchListBytes = protobuf.BatchList.encode({
