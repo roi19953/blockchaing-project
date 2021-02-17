@@ -17,13 +17,13 @@ var batcherPublicKey = signer.getPublicKey().asHex();
 
 var newArr1 = [signerPublicKey,batcherPublicKey]
 
-privateKey = context.newRandomPrivateKey();
-cryptoFact = new CryptoFactory(context);
-signer = cryptoFact.newSigner(privateKey);
-signerPublicKey = signer.getPublicKey().asHex();
-batcherPublicKey = signer.getPublicKey().asHex();
+// privateKey = context.newRandomPrivateKey();
+// cryptoFact = new CryptoFactory(context);
+// signer = cryptoFact.newSigner(privateKey);
+// signerPublicKey = signer.getPublicKey().asHex();
+// batcherPublicKey = signer.getPublicKey().asHex();
 
-var newArr2 = [signerPublicKey,batcherPublicKey]
+// var newArr2 = [signerPublicKey,batcherPublicKey]
 
 function createKey1() {
   const context = createContext("secp256k1");
