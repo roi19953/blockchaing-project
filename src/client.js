@@ -166,7 +166,36 @@ async function main_func() {
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();
-    await asyncCall(batchListBytes);
+    console.log('batchlist is ' + batchListBytes)
+    (async function () {
+      if (batchListBytes == null) {
+        try {
+          var geturl = "http://localhost:8008/state/" + this.address; //endpoint used to retrieve data from an address in Sawtooth blockchain
+          console.log("Getting from: " + geturl);
+          let response = await fetch(geturl, {
+            method: "GET",
+          });
+          let responseJson = await response.json();
+          var data = responseJson.data;
+          var newdata = Buffer.from(data, "base64").toString();
+          return newdata;
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        try {
+          let resp = await fetch("http://localhost:8008/batches", {
+            //endpoint to which we write data in a Sawtooth blockchain
+            method: "POST",
+            headers: { "Content-Type": "application/octet-stream" },
+            body: batchListBytes,
+          });
+          console.log("response--", resp);
+        } catch (error) {
+          console.log("error in fetch", error);
+        }
+      }
+    })();
   }
 }
 
