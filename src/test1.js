@@ -1,13 +1,21 @@
-var prompt = require('prompt');
- 
-prompt.start();
+const readline = require('readline');
 
-// var thisResult = "adf";
+async function askQuestion(query) {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
 
+    return new Promise(resolve => rl.question(query, ans => {
+        rl.close();
+        resolve(ans);
+    }))
+}
 
-// console.log(thisResult)
+async function func() {
+    const ans = await askQuestion("Are you sure you want to deploy to PRODUCTION? ");
+    console.log('enter here')
+}
 
-// const {username, email} = await prompt.get(['username', 'email']);
-
-// const {username, email} = await prompt.get(['username', 'email']);
-
+func()
+console.log('enter here')

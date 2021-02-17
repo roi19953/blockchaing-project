@@ -7,7 +7,7 @@ const { TextEncoder, TextDecoder } = require("text-encoding/lib/encoding");
 const privateKey = context.newRandomPrivateKey();
 const cryptoFact = new CryptoFactory(context);
 const signer = cryptoFact.newSigner(privateKey);
-var prompt = require('prompt');
+const readline = require('readline');
  
 
 const XoPayload = require("./payload");
@@ -89,49 +89,6 @@ const createBatch = (transactions) => {
   return batch;
 };
 
-/* This batch creates a new game */
-prompt.start();
-var input = ""
-while(input != "stop"){ 
-    yield sleep(10000);
-    prompt.get(['command'], function (err, result) {
-      console.log('Command-line input received:');
-      thisResult = result.command
-    
-    
-    // const readline = require('readline').createInterface({
-    //   input: process.stdin,
-    //   output: process.stdout
-    // });
-
-    // readline.question('enter command', input => {
-    //   console.log(`Hey there ${input}!`);
-    //   readline.close();
-    // });
-
-    const privateKey1 = context.newRandomPrivateKey();
-    const cryptoFact1 = new CryptoFactory(context);
-    const signer1 = cryptoFact1.newSigner(privateKey1);
-    const signerPublicKey1 = signer1.getPublicKey().asHex();
-    const batcherPublicKey1 = signer1.getPublicKey().asHex();
-
-    const privateKey2 = context.newRandomPrivateKey();
-    const cryptoFact2 = new CryptoFactory(context);
-    const signer2 = cryptoFact2.newSigner(privateKey2);
-    const signerPublicKey2 = signer2.getPublicKey().asHex();
-    const batcherPublicKey2 = signer2.getPublicKey().asHex();
-
-    const arr = [signerPublicKey1,batcherPublicKey1,signerPublicKey2,batcherPublicKey2];
-    const batchToSend = createBatch([createTransaction(thisResult,arr)]);
-
-
-    const batchListBytes = protobuf.BatchList.encode({
-      batches: [batchToSend],
-    }).finish();
-    asyncCall(batchListBytes);
-  });
-}
-
 
 async function asyncCall(batchListBytes) {
   if (batchListBytes == null) {
@@ -162,3 +119,48 @@ async function asyncCall(batchListBytes) {
     }
   }
 };
+
+
+const privateKey1 = context.newRandomPrivateKey();
+const cryptoFact1 = new CryptoFactory(context);
+const signer1 = cryptoFact1.newSigner(privateKey1);
+const signerPublicKey1 = signer1.getPublicKey().asHex();
+const batcherPublicKey1 = signer1.getPublicKey().asHex();
+
+const privateKey2 = context.newRandomPrivateKey();
+const cryptoFact2 = new CryptoFactory(context);
+const signer2 = cryptoFact2.newSigner(privateKey2);
+const signerPublicKey2 = signer2.getPublicKey().asHex();
+const batcherPublicKey2 = signer2.getPublicKey().asHex();
+
+
+
+async function main_func() {
+  var input = ""
+  while(input != "stop") { 
+
+    //input
+    async function askQuestion(query) {
+      const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+      });
+  
+      return new Promise(resolve => rl.question(query, ans => {
+          rl.close();
+          resolve(ans);
+      }))
+  }
+  input = await askQuestion("enter command")
+  console.log('input is ' + input)
+    const arr = [signerPublicKey1,batcherPublicKey1,signerPublicKey2,batcherPublicKey2];
+    const batchToSend = createBatch([createTransaction(input,arr)]);
+    const batchListBytes = protobuf.BatchList.encode({
+      batches: [batchToSend],
+    }).finish();
+    await asyncCall(batchListBytes);
+  }
+}
+
+main_func()
+
