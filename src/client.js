@@ -2,12 +2,12 @@ const { createContext, CryptoFactory } = require("sawtooth-sdk/signing");
 const crypto = require("crypto");
 const { protobuf } = require("sawtooth-sdk");
 const fetch = require("node-fetch");
-const context = createContext("secp256k1");
+// const context = createContext("secp256k1");
 const context2 = createContext("secp256k1");
 const { TextEncoder, TextDecoder } = require("text-encoding/lib/encoding");
-const privateKey = context.newRandomPrivateKey();
-const cryptoFact = new CryptoFactory(context);
-const signer = cryptoFact.newSigner(privateKey);
+// const privateKey = context.newRandomPrivateKey();
+// const cryptoFact = new CryptoFactory(context);
+// const signer = cryptoFact.newSigner(privateKey);
 const readline = require('readline');
  
 
@@ -16,8 +16,8 @@ const XoPayload = require("./payload");
 // const privateKey1 = context.newRandomPrivateKey();
 // const cryptoFact1 = new CryptoFactory(context);
 // const signer1 = cryptoFact1.newSigner(privateKey1);
-const signerPublicKey1 = signer.getPublicKey().asHex();
-const batcherPublicKey1 = signer.getPublicKey().asHex();
+// const signerPublicKey1 = signer.getPublicKey().asHex();
+// const batcherPublicKey1 = signer.getPublicKey().asHex();
 
 const privateKey2 = context2.newRandomPrivateKey();
 const cryptoFact2 = new CryptoFactory(context2);
