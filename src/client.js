@@ -20,7 +20,7 @@ const signerPublicKey1 = signer.getPublicKey().asHex();
 const batcherPublicKey1 = signer.getPublicKey().asHex();
 
 const privateKey2 = context2.newRandomPrivateKey();
-const cryptoFact2 = new CryptoFactory(context);
+const cryptoFact2 = new CryptoFactory(context2);
 const signer2 = cryptoFact2.newSigner(privateKey2);
 const signerPublicKey2 = signer2.getPublicKey().asHex();
 const batcherPublicKey2 = signer2.getPublicKey().asHex();
