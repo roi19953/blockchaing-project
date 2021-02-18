@@ -194,7 +194,7 @@ async function main_func() {
     var signer2 = createSigner();
     // const arr = [signerPublicKey,batcherPublicKey];
     // const arr = [signerPublicKey1,batcherPublicKey1];
-    const batchToSend = createBatch([createTransaction("game3,create,0", signer2)], signer2);
+    const batchToSend = createBatch([createTransaction("game3,create,0", signer1)], signer1);
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();
