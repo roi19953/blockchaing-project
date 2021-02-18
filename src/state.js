@@ -27,10 +27,13 @@ class XoState {
   }
 
   getGame(name) {
+    console.log("getGameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+
     return this._loadGames(name).then((games) => games.get(name));
   }
 
   setGame(name, game) {
+    console.log("setGameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     let address = _makeXoAddress(name);
 
     return this._loadGames(name)
@@ -69,6 +72,8 @@ class XoState {
   }
 
   _loadGames(name) {
+    console.log("LoadGameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+
     let address = _makeXoAddress(name);
     if (this.addressCache.has(address)) {
       if (this.addressCache.get(address) === null) {

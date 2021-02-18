@@ -25,9 +25,11 @@ class XoPayload {
     this.action = action;
     this.space = space;
     this.driver = driver;
+    console.log("EndXoPayLoadddddddddddddddddddddddddddddddddddddddddddddddd");
   }
 
   static fromBytes(payload) {
+    console.log("fromBytessssssssssssssssssssssssssssssssssssssssssssssss");
     payload = decoder.decode(payload).split(",");
     if (payload.length === 4) {
       let xoPayload = new XoPayload(payload[0], payload[1], payload[2], payload[3]);
