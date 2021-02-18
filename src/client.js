@@ -174,7 +174,12 @@ async function asyncCall(batchListBytes) {
 
 
 async function main_func() {
-  var input = ""
+  var input = "";
+  var count =0;
+  var signer1,signer2;
+  signer1 = createSigner();
+  signer2 = createSigner();
+  var signerToSend;
   while(input != "stop") { 
 
     //input
@@ -190,11 +195,20 @@ async function main_func() {
       }))
   }
   input = await askQuestion("enter command :")
-    var signer1 = createSigner();
-    var signer2 = createSigner();
+    
+    if (count%2==0)
+    {
+    signerToSend = signer1;
+    }
+    else
+    {
+    signerToSend = signer2; 
+    }
+    count = count + 1;    
+
     // const arr = [signerPublicKey,batcherPublicKey];
     // const arr = [signerPublicKey1,batcherPublicKey1];
-    const batchToSend = createBatch([createTransaction("game1,create,0", signer1)], signer1);
+    const batchToSend = createBatch([createTransaction(input, signerToSend)], signerToSend);
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();
