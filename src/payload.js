@@ -37,6 +37,7 @@ class XoPayload {
     console.log("");
 
     if (payload.length === 4) {
+      console.log("enter 4 length")
       let xoPayload = new XoPayload(payload[0], payload[1], payload[2], payload[3]);
       if (!xoPayload.name) {
         throw new InvalidTransaction("Name is required");
@@ -50,6 +51,7 @@ class XoPayload {
       }
       return xoPayload;
     } else {
+      console.log("enter serliaztion exception")
       throw new InvalidTransaction("Invalid payload serialization");
     }
   }
