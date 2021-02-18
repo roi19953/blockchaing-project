@@ -32,6 +32,10 @@ class XoPayload {
     console.log("fromBytessssssssssssssssssssssssssssssssssssssssssssssss");
     payload = decoder.decode(payload).split(",");
     console.log("payload: " + payload);
+    console.log("");
+    console.log("payload: " + payload.length);
+    console.log("");
+
     if (payload.length === 4) {
       let xoPayload = new XoPayload(payload[0], payload[1], payload[2], payload[3]);
       if (!xoPayload.name) {
