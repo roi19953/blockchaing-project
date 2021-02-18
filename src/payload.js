@@ -20,7 +20,7 @@ const { TextEncoder, TextDecoder } = require("text-encoding/lib/encoding");
 const { InvalidTransaction } = require("sawtooth-sdk/processor/exceptions");
 const decoder = new TextDecoder("utf8");
 class XoPayload {
-  constructor(name, action, space) {
+  constructor(name, action, space, driver) {
     this.name = name;
     this.action = action;
     this.space = space;
