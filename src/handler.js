@@ -231,7 +231,7 @@ class XOHandler extends TransactionHandler {
               game.driversArr
             )
         );
-
+        return xoState.setGame(payload.name, game);
       })
     }
     else if (payload.action === "delete") {
