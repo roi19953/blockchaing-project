@@ -196,7 +196,7 @@ async function main_func() {
   }
   input = await askQuestion("enter command :")
     
-    if (count%2==0)
+    if (count%2==0) // To know which turn
     {
     signerToSend = signer1;
     }
