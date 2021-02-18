@@ -119,7 +119,7 @@ const _deserialize = (data) => {
     .map((x) => x.split(","))
     .map((x) => [
       x[0],
-      { name: x[0], board: x[1], state: x[2], player1: x[3], player2: x[4] },
+      { name: x[0], board: x[1], state: x[2], player1: x[3], player2: x[4] , driversArr : x[5] },
     ]);
   return new Map(gamesIterable);
 };
@@ -130,7 +130,7 @@ const _serialize = (games) => {
     let name = nameGame[0];
     let game = nameGame[1];
     gameStrs.push(
-      [name, game.board, game.state, game.player1, game.player2].join(",")
+      [name, game.board, game.state, game.player1, game.player2 , game.driversArr].join(",")
     );
   }
 

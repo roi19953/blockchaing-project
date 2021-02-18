@@ -24,12 +24,13 @@ class XoPayload {
     this.name = name;
     this.action = action;
     this.space = space;
+    this.driver = driver;
   }
 
   static fromBytes(payload) {
     payload = decoder.decode(payload).split(",");
-    if (payload.length === 3) {
-      let xoPayload = new XoPayload(payload[0], payload[1], payload[2]);
+    if (payload.length === 4) {
+      let xoPayload = new XoPayload(payload[0], payload[1], payload[2], payload[3]);
       if (!xoPayload.name) {
         throw new InvalidTransaction("Name is required");
       }

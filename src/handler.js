@@ -130,6 +130,7 @@ class XOHandler extends TransactionHandler {
           state: "P1-NEXT",
           player1: "",
           player2: "",
+          driversArr : [],
         };
 
         _display(
@@ -172,9 +173,7 @@ class XOHandler extends TransactionHandler {
 
         if (boardList[payload.space - 1] !== "-") {
           throw new InvalidTransaction("Invalid Action: Space already taken.");
-        }
-/************************************************************************************************ */
-        
+        }        
 
         if (game.state === "P1-NEXT" && player === game.player1) {
           boardList[payload.space - 1] = "X";
@@ -187,8 +186,7 @@ class XOHandler extends TransactionHandler {
           throw new InvalidTransaction(
             `Not this player's turn: ${player.toString().substring(0, 6)}`
           );
-        }//P1-NEXTplayer1: 02e2b2f9a5e5374a9f81f1bbd1911f80859e602137b94fd96ef00b3906e7e12571player2: 03e8ff142baa25d288122e95b42cef2c94d6b8a2836a6ea47288b80241ec64600f
-
+        }
         game.board = boardList.join("");
 
         if (_isWin(game.board, "X")) {
@@ -214,7 +212,15 @@ class XOHandler extends TransactionHandler {
 
         return xoState.setGame(payload.name, game);
       });
-    } else if (payload.action === "delete") {
+    } 
+    else if ( payload.action === "addDriver")
+    {
+      return xoState.getGame(payload.name).then((game) =>
+      {
+        game.driversArr.push(payload.driver); 
+      })
+    }
+    else if (payload.action === "delete") {
       return xoState.getGame(payload.name).then((game) => {
         if (game === undefined) {
           throw new InvalidTransaction(
@@ -225,7 +231,7 @@ class XOHandler extends TransactionHandler {
       });
     } else {
       throw new InvalidTransaction(
-        `Action must be create, delete, or take not ${payload.action}`
+        `Action must be create, delete, addDriver or take not ${payload.action}`
       );
     }
   }
