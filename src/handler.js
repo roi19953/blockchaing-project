@@ -221,9 +221,9 @@ class XOHandler extends TransactionHandler {
       {
         game.driversArr.push(payload.driver); 
 
-        let driversList = game.driversArr;
+        let driversList = game.driversArr.split("");
         driversList.push(payload.driver);
-        game.driversList = driversList;
+        game.driversList = driversList.join("");
 
         let playerString = player.toString().substring(0, 6);
 
@@ -238,7 +238,6 @@ class XOHandler extends TransactionHandler {
               game.driversArr
             )
         );
-
 
         return xoState.setGame(payload.name, game);
       })
