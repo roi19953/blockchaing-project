@@ -24,7 +24,7 @@ const { XO_NAMESPACE, XO_FAMILY, XoState } = require("./state");
 const { TransactionHandler } = require("sawtooth-sdk/processor/handler");
 const { InvalidTransaction } = require("sawtooth-sdk/processor/exceptions");
 
-const _gameToStr = (board, state, player1, player2, name) => {
+const _gameToStr = (board, state, player1, player2, name , driversArr) => {
   board = board.replace(/-/g, " ");
   board = board.split("");
   let out = "";
@@ -38,6 +38,7 @@ const _gameToStr = (board, state, player1, player2, name) => {
   out += `${board[3]} | ${board[4]} | ${board[5]} \n`;
   out += `---|---|--- \n`;
   out += `${board[6]} | ${board[7]} | ${board[8]} \n`;
+  out += `driversArr: ${driversArr[0]}\n`
   return out;
 };
 
@@ -206,7 +207,8 @@ class XOHandler extends TransactionHandler {
               game.state,
               game.player1,
               game.player2,
-              payload.name
+              payload.name,
+              game.driversArr
             )
         );
 
@@ -218,6 +220,18 @@ class XOHandler extends TransactionHandler {
       return xoState.getGame(payload.name).then((game) =>
       {
         game.driversArr.push(payload.driver); 
+        _display(
+          `Player ${playerString} takes space: ${payload.space}\n\n` +
+            _gameToStr(
+              game.board,
+              game.state,
+              game.player1,
+              game.player2,
+              payload.name,
+              game.driversArr
+            )
+        );
+
       })
     }
     else if (payload.action === "delete") {
