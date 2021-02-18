@@ -217,14 +217,16 @@ class XOHandler extends TransactionHandler {
     } 
     else if ( payload.action === "addDriver")
     {
+      
       return xoState.getGame(payload.name).then((game) =>
       {
-
+        console.log("herrrrrrrrrrrrrrrrrrrrrrrrrr");
         let driversList = game.driversArr.split("");
         driversList.push(payload.driver);
         game.driversList = driversList.join("");
 
         //let playerString = player.toString().substring(0, 6);
+        console.log("herrrrrrrrrrrrrrrrrrrrrrrrrr2");
 
         _display(
           `Player ? takes space: ${payload.space}\n\n` +
