@@ -128,7 +128,7 @@ class XOHandler extends TransactionHandler {
 
         let createdGame = {
           name: payload.name,
-          board: "---------",
+          //board: "---------",
           state: "P1-NEXT",
           player1: "",
           player2: "",
@@ -172,6 +172,7 @@ class XOHandler extends TransactionHandler {
         } else if (game.player2 === "") {
           game.player2 = player;
         }
+
         let boardList = game.board.split("");
 
         if (boardList[payload.space - 1] !== "-") {
