@@ -170,9 +170,6 @@ async function asyncCall(batchListBytes) {
   }
 };
 
-
-
-
 async function main_func() {
   var input = "";
   var count =0;
