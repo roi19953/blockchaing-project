@@ -121,6 +121,7 @@ class XOHandler extends TransactionHandler {
 
     if (payload.action === "create") {
       return xoState.getGame(payload.name).then((game) => {
+        console.log("createeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
         if (game !== undefined) {
           throw new InvalidTransaction("Invalid Action: Game already exists.");
         }
@@ -131,7 +132,7 @@ class XOHandler extends TransactionHandler {
           state: "P1-NEXT",
           player1: "",
           player2: "",
-          driversArr : [],
+          driversArr : "",
         };
 
         _display(
@@ -144,6 +145,7 @@ class XOHandler extends TransactionHandler {
       });
     } else if (payload.action === "take") {
       return xoState.getGame(payload.name).then((game) => {
+        console.log("takeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
         try {
           parseInt(payload.space);
         } catch (err) {
@@ -220,13 +222,13 @@ class XOHandler extends TransactionHandler {
       
       return xoState.getGame(payload.name).then((game) =>
       {
-        console.log("herrrrrrrrrrrrrrrrrrrrrrrrrr");
+        console.log("addDriverrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
         let driversList = game.driversArr.split("");
         driversList.push(payload.driver);
         game.driversList = driversList.join("");
 
         //let playerString = player.toString().substring(0, 6);
-        console.log("herrrrrrrrrrrrrrrrrrrrrrrrrr2");
+        console.log("addDriverrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr2");
 
         _display(
           `Player ? takes space: ${payload.space}\n\n` +
