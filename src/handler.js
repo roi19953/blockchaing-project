@@ -210,7 +210,7 @@ class XOHandler extends TransactionHandler {
               game.player1,
               game.player2,
               payload.name,
-              game.driversArr
+              game.driversArr,
             )
         );
 
@@ -238,7 +238,7 @@ class XOHandler extends TransactionHandler {
               game.player1,
               game.player2,
               payload.name,
-              game.driversArr
+              game.driversArr,
             )
         );
 
