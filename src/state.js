@@ -43,7 +43,7 @@ class XoState {
       })
       .then((games) => {
         let data = _serialize(games);
-
+        console.log("data: "+data);
         this.addressCache.set(address, data);
         let entries = {
           [address]: data,
@@ -136,12 +136,16 @@ const _serialize = (games) => {
   for (let nameGame of games) {
     let name = nameGame[0];
     let game = nameGame[1];
+    console.log ("Middle1_serializeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+
     gameStrs.push(
       [name, game.board, game.state, game.player1, game.player2 , game.driversArr].join(",")
     );
+    console.log ("Middle2_serializeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   }
 
   gameStrs.sort();
+  console.log ("End_serializeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 
   return Buffer.from(gameStrs.join("|"));
 };
