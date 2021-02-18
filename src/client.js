@@ -20,8 +20,8 @@ const XO_NAMESPACE = _hash(XO_FAMILY).substring(0, 6);
 const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
 
 const createTransaction = (payload, signer) => {
-const [gameName, action, space] = payload.split(",");
-payload = gameName+','+action+','+space
+const [gameName, action, space, driver] = payload.split(",");
+payload = gameName+','+action+','+space +','+driver; 
 
   
 const encoder = new TextEncoder("utf8");
@@ -125,7 +125,7 @@ async function main_func() {
     else
        signerToSend = signer2;     
     count = count + 1;    
-    
+
     const batchToSend = createBatch([createTransaction(input, signerToSend)], signerToSend);
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
