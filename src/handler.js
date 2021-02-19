@@ -24,7 +24,7 @@ const { XO_NAMESPACE, XO_FAMILY, XoState } = require("./state");
 const { TransactionHandler } = require("sawtooth-sdk/processor/handler");
 const { InvalidTransaction } = require("sawtooth-sdk/processor/exceptions");
 
-const _gameToStr = (board, state, player1, player2, name , driversArr) => {
+const _gameToStr = (board, state, player1, player2, name) => {
   board = board.replace(/-/g, " ");
   board = board.split("");
   let out = "";
@@ -38,7 +38,6 @@ const _gameToStr = (board, state, player1, player2, name , driversArr) => {
   out += `${board[3]} | ${board[4]} | ${board[5]} \n`;
   out += `---|---|--- \n`;
   out += `${board[6]} | ${board[7]} | ${board[8]} \n`;
-  out += `driversArr: ${driversArr[0]}\n`
   return out;
 };
 
@@ -121,18 +120,16 @@ class XOHandler extends TransactionHandler {
 
     if (payload.action === "create") {
       return xoState.getGame(payload.name).then((game) => {
-        console.log("createeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
         if (game !== undefined) {
           throw new InvalidTransaction("Invalid Action: Game already exists.");
         }
 
         let createdGame = {
           name: payload.name,
-          //board: "---------",
+          board: "---------",
           state: "P1-NEXT",
           player1: "",
           player2: "",
-          driversArr : "",
         };
 
         _display(
@@ -145,7 +142,6 @@ class XOHandler extends TransactionHandler {
       });
     } else if (payload.action === "take") {
       return xoState.getGame(payload.name).then((game) => {
-        console.log("takeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
         try {
           parseInt(payload.space);
         } catch (err) {
@@ -172,12 +168,13 @@ class XOHandler extends TransactionHandler {
         } else if (game.player2 === "") {
           game.player2 = player;
         }
-
         let boardList = game.board.split("");
 
         if (boardList[payload.space - 1] !== "-") {
           throw new InvalidTransaction("Invalid Action: Space already taken.");
-        }        
+        }
+/************************************************************************************************ */
+        
 
         if (game.state === "P1-NEXT" && player === game.player1) {
           boardList[payload.space - 1] = "X";
@@ -190,7 +187,8 @@ class XOHandler extends TransactionHandler {
           throw new InvalidTransaction(
             `Not this player's turn: ${player.toString().substring(0, 6)}`
           );
-        }
+        }//P1-NEXTplayer1: 02e2b2f9a5e5374a9f81f1bbd1911f80859e602137b94fd96ef00b3906e7e12571player2: 03e8ff142baa25d288122e95b42cef2c94d6b8a2836a6ea47288b80241ec64600f
+
         game.board = boardList.join("");
 
         if (_isWin(game.board, "X")) {
@@ -210,43 +208,13 @@ class XOHandler extends TransactionHandler {
               game.state,
               game.player1,
               game.player2,
-              payload.name,
-              game.driversArr,
+              payload.name
             )
         );
 
         return xoState.setGame(payload.name, game);
       });
-    } 
-    else if ( payload.action === "addDriver")
-    {
-      
-      return xoState.getGame(payload.name).then((game) =>
-      {
-        console.log("addDriverrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-        let driversList = game.driversArr.split("");
-        driversList.push(payload.driver);
-        game.driversList = driversList.join("");
-
-        //let playerString = player.toString().substring(0, 6);
-        console.log("addDriverrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr2");
-
-        _display(
-          `Player ? takes space: ${payload.space}\n\n` +
-            _gameToStr(
-              game.board,
-              game.state,
-              game.player1,
-              game.player2,
-              payload.name,
-              game.driversArr,
-            )
-        );
-
-        return xoState.setGame(payload.name, game);
-      })
-    }
-    else if (payload.action === "delete") {
+    } else if (payload.action === "delete") {
       return xoState.getGame(payload.name).then((game) => {
         if (game === undefined) {
           throw new InvalidTransaction(
@@ -257,7 +225,7 @@ class XOHandler extends TransactionHandler {
       });
     } else {
       throw new InvalidTransaction(
-        `Action must be create, delete, addDriver or take not ${payload.action}`
+        `Action must be create, delete, or take not ${payload.action}`
       );
     }
   }

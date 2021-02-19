@@ -20,25 +20,16 @@ const { TextEncoder, TextDecoder } = require("text-encoding/lib/encoding");
 const { InvalidTransaction } = require("sawtooth-sdk/processor/exceptions");
 const decoder = new TextDecoder("utf8");
 class XoPayload {
-  constructor(name, action, space, driver) {
+  constructor(name, action, space) {
     this.name = name;
     this.action = action;
     this.space = space;
-    this.driver = driver;
-    console.log("EndXoPayLoadddddddddddddddddddddddddddddddddddddddddddddddd");
   }
 
   static fromBytes(payload) {
-    console.log("fromBytessssssssssssssssssssssssssssssssssssssssssssssss");
     payload = decoder.decode(payload).split(",");
-    console.log("payload: " + payload);
-    console.log("");
-    console.log("payload: " + payload.length);
-    console.log("");
-
-    if (payload.length === 4) {
-      console.log("enter 4 length")
-      let xoPayload = new XoPayload(payload[0], payload[1], payload[2], payload[3]);
+    if (payload.length === 3) {
+      let xoPayload = new XoPayload(payload[0], payload[1], payload[2]);
       if (!xoPayload.name) {
         throw new InvalidTransaction("Name is required");
       }
@@ -51,7 +42,6 @@ class XoPayload {
       }
       return xoPayload;
     } else {
-      console.log("enter serliaztion exception")
       throw new InvalidTransaction("Invalid payload serialization");
     }
   }
