@@ -31,10 +31,14 @@ class XoState {
   }
 
   addDriver() {
+    console.log('4');
     let address = _makeDataAddress();
+
 
     return this._loadData()
       .then((data) => {
+        console.log('5');
+
         console.log("in add driver, data is : " + data);
         
         let drivers = data.get("drivers");
@@ -145,7 +149,7 @@ class XoState {
             const initialData = new Map([]);
             initialData.set("drivers", []);
             initialData.set("clients", []);
-            
+
             return initialData;
           } else {
             let data = addressValues[address].toString();
