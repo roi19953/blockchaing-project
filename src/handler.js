@@ -114,6 +114,7 @@ class XOHandler extends TransactionHandler {
 
   apply(transactionProcessRequest, context) {
     let payload = XoPayload.fromBytes(transactionProcessRequest.payload);
+    console.log('recieved payload is : ' + payload)
     let xoState = new XoState(context);
     let header = transactionProcessRequest.header;
     let player = header.signerPublicKey;
