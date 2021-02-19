@@ -26,6 +26,35 @@ class XoState {
     this.timeout = 500; // Timeout in milliseconds
   }
 
+  getData() {
+    return this._loadData().then((data) => data);
+  }
+
+  addDriver() {
+    let address = _makeDataAddress();
+
+    return this._loadData()
+      .then((data) => {
+        console.log("in add driver, data is : " + data);
+        
+        let drivers = data.get("drivers");
+        console.log("in add driver, drivers is : " + drivers);
+
+        drivers.push("driver");
+        data.set("drivers", drivers);
+        return data;
+      })
+      .then((data) => {
+        let data2 = _serialize(data);
+
+        this.addressCache.set(address, data2);
+        let entries = {
+          [address]: data2,
+        };
+        return this.context.setState(entries, this.timeout);
+      });
+  }
+
   getGame(name) {
     return this._loadGames(name).then((games) => games.get(name));
   }
@@ -91,6 +120,41 @@ class XoState {
         });
     }
   }
+
+  _loadData() {
+    let address = _makeDataAddress();
+
+    
+    if (this.addressCache.has(address)) {
+      if (this.addressCache.get(address) === null) {
+        const initialData = new Map([]);
+        initialData.set("drivers", []);
+        initialData.set("clients", []);
+        
+        return Promise.resolve(initialData);
+      } else {
+        return Promise.resolve(_deserialize(this.addressCache.get(address)));
+      }
+    } else {
+      return this.context
+        .getState([address], this.timeout)
+        .then((addressValues) => {
+          if (!addressValues[address].toString()) {
+            this.addressCache.set(address, null);
+
+            const initialData = new Map([]);
+            initialData.set("drivers", []);
+            initialData.set("clients", []);
+            
+            return initialData;
+          } else {
+            let data = addressValues[address].toString();
+            this.addressCache.set(address, data);
+            return _deserialize(data);
+          }
+        });
+    }
+  }
 }
 
 const _hash = (x) =>
@@ -106,6 +170,7 @@ const XO_FAMILY = "xo";
 const XO_NAMESPACE = _hash(XO_FAMILY).substring(0, 6);
 
 const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
+const _makeDataAddress = () => XO_NAMESPACE;
 
 module.exports = {
   XO_NAMESPACE,

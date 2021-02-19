@@ -122,8 +122,8 @@ class XOHandler extends TransactionHandler {
     let player = header.signerPublicKey;
 
     if (payload.action === "create") {
-      return xoState.getGame(payload.name).then((game) => {
-        if (game !== undefined) {
+      return xoState.getData().then((data) => {
+        if (data !== undefined) {
           throw new InvalidTransaction("Invalid Action: Game already exists.");
         }
 
@@ -141,7 +141,7 @@ class XOHandler extends TransactionHandler {
           }`
         );
 
-        return xoState.setGame(payload.name, createdGame);
+        return xoState.addDriver();
       });
     } else if (payload.action === "take") {
       return xoState.getGame(payload.name).then((game) => {
