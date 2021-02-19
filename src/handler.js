@@ -113,6 +113,7 @@ class XOHandler extends TransactionHandler {
   }
 
   apply(transactionProcessRequest, context) {
+    console.log('in apply')
     let payload = XoPayload.fromBytes(transactionProcessRequest.payload);
     console.log('recieved payload is : ' + payload)
     console.log('payload action : ' + payload.action);
