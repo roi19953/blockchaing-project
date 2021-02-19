@@ -183,7 +183,7 @@ const XO_FAMILY = "xo";
 const XO_NAMESPACE = _hash(XO_FAMILY).substring(0, 6);
 
 const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
-const _makeDataAddress = () => XO_NAMESPACE + _hash("tla");
+const _makeDataAddress = () => XO_NAMESPACE + _hash("0");
 
 module.exports = {
   XO_NAMESPACE,
