@@ -66,12 +66,9 @@ const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
 const createTransaction = (payload, signer) => {
   console.log(payload);
   var player = 1
-  const [gameName, action, space] = payload.split(",");
-  console.log('gamename is : ' + gameName)
+  const [action, type] = payload.split(",");
   console.log('action is : ' + action)
-  console.log('space is : ' + space)
-  console.log('player is : ' + player)
-  payload = gameName+','+action+','+space
+  console.log('type is : ' + type)
   console.log('payload is : ' + payload)
     // var signerKey = arr[0];
     // var batcherKey = arr[0];
