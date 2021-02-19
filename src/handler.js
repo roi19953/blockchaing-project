@@ -124,24 +124,10 @@ class XOHandler extends TransactionHandler {
     if (payload.action === "create") {
       console.log('1');
       return xoState.getData().then((data) => {
-        console.log('2');
+        console.log('2 ' + data);
         if (data !== undefined) {
           throw new InvalidTransaction("Invalid Action: Game already exists.");
         }
-
-        let createdGame = {
-          name: payload.name,
-          board: "---------",
-          state: "P1-NEXT",
-          player1: "",
-          player2: "",
-        };
-
-        _display(
-          `Player ${player.toString().substring(0, 6)} created game ${
-            payload.name
-          }`
-        );
 
         console.log('3');
         return xoState.addDriver();
