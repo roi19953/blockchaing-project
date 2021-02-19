@@ -45,7 +45,7 @@ class XoState {
         console.log("in add driver, drivers is : " + JSON.stringify(drivers));
         console.log("in add driver, data is : " + JSON.stringify(data));
 
-        drivers.push("driver");
+        drivers.push("driver number a");
         data.set("drivers", drivers);
         return data;
       })

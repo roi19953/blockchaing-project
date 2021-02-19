@@ -140,8 +140,9 @@ const createBatch = (transactions, signer) => {
 async function asyncCall(batchListBytes) {
   if (batchListBytes == null) {
     try {
+      
       var geturl = "http://localhost:8008/state/" + this.address; //endpoint used to retrieve data from an address in Sawtooth blockchain
-      console.log("Getting from: " + geturl);
+      console.log('geturl is :' + geturl)
       let response = await fetch(geturl, {
         method: "GET",
       });
@@ -160,6 +161,8 @@ async function asyncCall(batchListBytes) {
         headers: { "Content-Type": "application/octet-stream" },
         body: batchListBytes,
       });
+      console.log('in else url ' + geturl)
+
       console.log("response--", resp);
     } catch (error) {
       console.log("error in fetch", error);
@@ -175,7 +178,7 @@ async function main_func() {
   var count =0;
   var signer1,signer2;
   signer1 = createSigner();
-  signer2 = createSigner();
+  signer2 = signer1;
   var signerToSend;
   while(input != "stop") { 
 
@@ -206,6 +209,7 @@ async function main_func() {
     // const arr = [signerPublicKey,batcherPublicKey];
     // const arr = [signerPublicKey1,batcherPublicKey1];
     const batchToSend = createBatch([createTransaction(input, signerToSend)], signerToSend);
+    console.log('batchtosend is ' + batchToSend)
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();
