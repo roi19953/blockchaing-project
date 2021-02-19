@@ -144,10 +144,15 @@ class XoState {
         return Promise.resolve(_deserialize(this.addressCache.get(address)));
       }
     } else {
+      console.log('cccc')
       return this.context
         .getState([address], this.timeout)
         .then((addressValues) => {
+          console.log('dddddd ' + addressValues[address].toString())
+
           if (!addressValues[address].toString()) {
+            console.log('eeeeeee')
+
             this.addressCache.set(address, null);
 
             const initialData = new Map([]);
