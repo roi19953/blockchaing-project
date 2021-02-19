@@ -62,14 +62,16 @@ const _hash = (x) =>
 const XO_FAMILY = "xo";
 const XO_NAMESPACE = _hash(XO_FAMILY).substring(0, 6);
 const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
-const _makeDataAddress = () => XO_NAMESPACE + _hash("0");
 
 const createTransaction = (payload, signer) => {
   console.log(payload);
   var player = 1
-  const [action, type] = payload.split(",");
+  const [gameName, action, space] = payload.split(",");
+  console.log('gamename is : ' + gameName)
   console.log('action is : ' + action)
-  console.log('type is : ' + type)
+  console.log('space is : ' + space)
+  console.log('player is : ' + player)
+  payload = gameName+','+action+','+space
   console.log('payload is : ' + payload)
     // var signerKey = arr[0];
     // var batcherKey = arr[0];
@@ -90,8 +92,8 @@ const createTransaction = (payload, signer) => {
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
     familyName: XO_FAMILY,
     familyVersion: "1.0",
-    inputs: [_makeDataAddress()],
-    outputs: [_makeDataAddress()],
+    inputs: [_makeXoAddress(gameName)],
+    outputs: [_makeXoAddress(gameName)],
     signerPublicKey: signer.getPublicKey().asHex(),
     // In this example, we're signing the batch with the same private key,
     // but the batch can be signed by another party, in which case, the
@@ -141,9 +143,8 @@ const createBatch = (transactions, signer) => {
 async function asyncCall(batchListBytes) {
   if (batchListBytes == null) {
     try {
-      
       var geturl = "http://localhost:8008/state/" + this.address; //endpoint used to retrieve data from an address in Sawtooth blockchain
-      console.log('geturl is :' + geturl)
+      console.log("Getting from: " + geturl);
       let response = await fetch(geturl, {
         method: "GET",
       });
@@ -162,8 +163,6 @@ async function asyncCall(batchListBytes) {
         headers: { "Content-Type": "application/octet-stream" },
         body: batchListBytes,
       });
-      console.log('in else url ' + geturl)
-
       console.log("response--", resp);
     } catch (error) {
       console.log("error in fetch", error);
@@ -179,7 +178,7 @@ async function main_func() {
   var count =0;
   var signer1,signer2;
   signer1 = createSigner();
-  signer2 = signer1;
+  signer2 = createSigner();
   var signerToSend;
   while(input != "stop") { 
 
@@ -210,7 +209,6 @@ async function main_func() {
     // const arr = [signerPublicKey,batcherPublicKey];
     // const arr = [signerPublicKey1,batcherPublicKey1];
     const batchToSend = createBatch([createTransaction(input, signerToSend)], signerToSend);
-    console.log('batchtosend is ' + JSON.stringify(batchToSend))
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();
