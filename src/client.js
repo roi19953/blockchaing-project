@@ -62,6 +62,7 @@ const _hash = (x) =>
 const XO_FAMILY = "xo";
 const XO_NAMESPACE = _hash(XO_FAMILY).substring(0, 6);
 const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
+const _makeDataAddress = () => XO_NAMESPACE + _hash("0");
 
 const createTransaction = (payload, signer) => {
   console.log(payload);
@@ -89,8 +90,8 @@ const createTransaction = (payload, signer) => {
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
     familyName: XO_FAMILY,
     familyVersion: "1.0",
-    inputs: [_makeXoAddress("0")],
-    outputs: [_makeXoAddress("0")],
+    inputs: [_makeDataAddress()],
+    outputs: [_makeDataAddress()],
     signerPublicKey: signer.getPublicKey().asHex(),
     // In this example, we're signing the batch with the same private key,
     // but the batch can be signed by another party, in which case, the
@@ -209,7 +210,7 @@ async function main_func() {
     // const arr = [signerPublicKey,batcherPublicKey];
     // const arr = [signerPublicKey1,batcherPublicKey1];
     const batchToSend = createBatch([createTransaction(input, signerToSend)], signerToSend);
-    console.log('batchtosend is ' + batchToSend)
+    console.log('batchtosend is ' + JSON.stringify(batchToSend))
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();
