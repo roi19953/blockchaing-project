@@ -20,29 +20,18 @@ const { TextEncoder, TextDecoder } = require("text-encoding/lib/encoding");
 const { InvalidTransaction } = require("sawtooth-sdk/processor/exceptions");
 const decoder = new TextDecoder("utf8");
 class XoPayload {
-  constructor(name, action, space) {
-    this.name = name;
+  constructor(action, type) {
     this.action = action;
-    this.space = space;
+    this.type = type;
   }
 
   static fromBytes(payload) {
     payload = decoder.decode(payload).split(",");
-    if (payload.length === 3) {
-      let xoPayload = new XoPayload(payload[0], payload[1], payload[2]);
-      if (!xoPayload.name) {
-        throw new InvalidTransaction("Name is required");
-      }
-      if (xoPayload.name.indexOf("|") !== -1) {
-        throw new InvalidTransaction('Name cannot contain "|"');
-      }
-
-      if (!xoPayload.action) {
-        throw new InvalidTransaction("Action is required");
-      }
+    if (payload.length === 2) {
+      let xoPayload = new XoPayload(payload[0], payload[1]);
       return xoPayload;
     } else {
-      throw new InvalidTransaction("Invalid payload serialization");
+      throw new InvalidTransaction("Invalid payload serializationaaaaaaaa");
     }
   }
 }

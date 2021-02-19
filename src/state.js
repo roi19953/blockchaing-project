@@ -26,6 +26,40 @@ class XoState {
     this.timeout = 500; // Timeout in milliseconds
   }
 
+  getData() {
+    return this._loadData().then((data) => data);
+  }
+
+  addDriver() {
+    console.log('4');
+    let address = _makeDataAddress();
+
+
+    return this._loadData()
+      .then((data) => {
+        console.log('5');
+
+        console.log("in add driver, data is : " + data);
+        
+        let drivers = data.get("drivers");
+        console.log("in add driver, drivers is : " + JSON.stringify(drivers));
+        console.log("in add driver, data is : " + JSON.stringify(data));
+
+        drivers.push("driver number a");
+        data.set("drivers", drivers);
+        return data;
+      })
+      .then((data) => {
+        let data2 = _serialize(data);
+
+        this.addressCache.set(address, data2);
+        let entries = {
+          [address]: data2,
+        };
+        return this.context.setState(entries, this.timeout);
+      });
+  }
+
   getGame(name) {
     return this._loadGames(name).then((games) => games.get(name));
   }
@@ -91,6 +125,50 @@ class XoState {
         });
     }
   }
+
+  _loadData() {
+    console.log('a')
+    let address = _makeDataAddress();
+    console.log('b ' + address)
+    
+    if (this.addressCache.has(address)) {
+      console.log('c')
+      if (this.addressCache.get(address) === null) {
+        console.log('d')
+
+        const initialData = new Map([]);
+        initialData.set("drivers", []);
+        initialData.set("clients", []);
+        
+        return Promise.resolve(initialData);
+      } else {
+        return Promise.resolve(_deserialize(this.addressCache.get(address)));
+      }
+    } else {
+      console.log('cccc')
+      return this.context
+        .getState([address], this.timeout)
+        .then((addressValues) => {
+          console.log('dddddd ' + addressValues[address].toString())
+
+          if (!addressValues[address].toString()) {
+            console.log('eeeeeee')
+
+            this.addressCache.set(address, null);
+
+            const initialData = new Map([]);
+            initialData.set("drivers", []);
+            initialData.set("clients", []);
+
+            return initialData;
+          } else {
+            let data = addressValues[address].toString();
+            this.addressCache.set(address, data);
+            return _deserialize(data);
+          }
+        });
+    }
+  }
 }
 
 const _hash = (x) =>
@@ -106,6 +184,7 @@ const XO_FAMILY = "xo";
 const XO_NAMESPACE = _hash(XO_FAMILY).substring(0, 6);
 
 const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
+const _makeDataAddress = () => XO_NAMESPACE + _hash("0");
 
 module.exports = {
   XO_NAMESPACE,
