@@ -89,8 +89,8 @@ const createTransaction = (payload, signer) => {
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
     familyName: XO_FAMILY,
     familyVersion: "1.0",
-    inputs: [_makeXoAddress(gameName)],
-    outputs: [_makeXoAddress(gameName)],
+    inputs: [_makeXoAddress("0")],
+    outputs: [_makeXoAddress("0")],
     signerPublicKey: signer.getPublicKey().asHex(),
     // In this example, we're signing the batch with the same private key,
     // but the batch can be signed by another party, in which case, the
