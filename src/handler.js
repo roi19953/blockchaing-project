@@ -125,9 +125,9 @@ class XOHandler extends TransactionHandler {
       console.log('1');
       return xoState.getData().then((data) => {
         console.log('2 ' + data);
-        if (data !== undefined) {
-          throw new InvalidTransaction("Invalid Action: Game already exists.");
-        }
+        console.log('2.1 ' + data.get('drivers'));
+        console.log('2.2 ' + data.get('clients'));
+        
 
         console.log('3');
         return xoState.addDriver();
