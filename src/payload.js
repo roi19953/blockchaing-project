@@ -31,7 +31,7 @@ class XoPayload {
       let xoPayload = new XoPayload(payload[0], payload[1]);
       return xoPayload;
     } else {
-      throw new InvalidTransaction("Invalid payload serialization");
+      throw new InvalidTransaction("Invalid payload serializationaaaaaaaa");
     }
   }
 }
