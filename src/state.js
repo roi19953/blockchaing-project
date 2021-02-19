@@ -126,11 +126,15 @@ class XoState {
   }
 
   _loadData() {
+    console.log('a')
     let address = _makeDataAddress();
-
+    console.log('b ' + address)
     
     if (this.addressCache.has(address)) {
+      console.log('c')
       if (this.addressCache.get(address) === null) {
+        console.log('d')
+
         const initialData = new Map([]);
         initialData.set("drivers", []);
         initialData.set("clients", []);
