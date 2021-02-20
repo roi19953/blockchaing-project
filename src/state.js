@@ -128,7 +128,7 @@ const _serialize = (citys) => {
   let cityStrs = [];
   for (let nameCity of citys) {
     let name = nameCity[0];
-    let city = nameCIty[1];
+    let city = nameCity[1];
     cityStrs.push(
       [name, city.board, city.state, city.player1, city.player2].join(",")
     );

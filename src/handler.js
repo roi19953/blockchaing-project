@@ -296,7 +296,7 @@ class XOHandler extends TransactionHandler {
         }
 
         _display(
-          `Player ${playerString} takes space: ${payload.space}\n\n` +
+          `cost is: ${cost}, Player ${playerString} takes space: ${payload.space}\n\n` +
             _cityToStr(
               city.board,
               city.state,
