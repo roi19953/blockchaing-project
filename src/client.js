@@ -206,3 +206,26 @@ async function main_func() {
 
 main_func()
 
+// async function main_func2() {
+//     var city = "";
+//     while(city != "stop") { 
+
+//       //input
+//       async function askQuestion(query) {
+//         const rl = readline.createInterface({
+//             input: process.stdin,
+//             output: process.stdout,
+//         });
+    
+//         return new Promise(resolve => rl.question(query, ans => {
+//             rl.close();
+//             resolve(ans);
+//         }))
+//     }
+//     city = await askQuestion("enter city :")
+//     var source_x = parseInt(await askQuestion("enter source x :"))
+//     var source_y = parseInt(await askQuestion("enter source y :"))
+
+//   }
+// }
+

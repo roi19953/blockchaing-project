@@ -282,8 +282,18 @@ class XOHandler extends TransactionHandler {
 
         let playerString = player.toString().substring(0, 6);
 
+        var cityName = payload.name
+        var source = payload.space / 10 - 1
+        var target = payload.space % 10 - 1
+        var cost = 0
+        if(cityName === 'TelAviv') {
+          cost = (target - source)*10
+        } else {
+          cost = (target-source)*5
+        }
+
         _display(
-          `Player ${playerString} takes space: ${payload.space}\n\n` +
+          `cost is: ${cost}, Player ${playerString} takes space: ${payload.space}\n\n` +
             _cityToStr(
               city.board,
               city.state,
