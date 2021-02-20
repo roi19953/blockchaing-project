@@ -121,7 +121,6 @@ class XOHandler extends TransactionHandler {
 
     if (payload.action === "create") {
       return xoState.getGame(payload.name).then((game) => {
-        console.log("createeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
         if (game !== undefined) {
           throw new InvalidTransaction("Invalid Action: Game already exists.");
         }
@@ -145,7 +144,6 @@ class XOHandler extends TransactionHandler {
       });
     } else if (payload.action === "take") {
       return xoState.getGame(payload.name).then((game) => {
-        console.log("takeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
         try {
           parseInt(payload.space);
         } catch (err) {
@@ -172,12 +170,13 @@ class XOHandler extends TransactionHandler {
         } else if (game.player2 === "") {
           game.player2 = player;
         }
-
         let boardList = game.board.split("");
 
         if (boardList[payload.space - 1] !== "-") {
           throw new InvalidTransaction("Invalid Action: Space already taken.");
-        }        
+        }
+/************************************************************************************************ */
+        
 
         if (game.state === "P1-NEXT" && player === game.player1) {
           boardList[payload.space - 1] = "X";
@@ -190,7 +189,8 @@ class XOHandler extends TransactionHandler {
           throw new InvalidTransaction(
             `Not this player's turn: ${player.toString().substring(0, 6)}`
           );
-        }
+        }//P1-NEXTplayer1: 02e2b2f9a5e5374a9f81f1bbd1911f80859e602137b94fd96ef00b3906e7e12571player2: 03e8ff142baa25d288122e95b42cef2c94d6b8a2836a6ea47288b80241ec64600f
+
         game.board = boardList.join("");
 
         if (_isWin(game.board, "X")) {
@@ -210,8 +210,7 @@ class XOHandler extends TransactionHandler {
               game.state,
               game.player1,
               game.player2,
-              payload.name,
-              game.driversArr,
+              payload.name
             )
         );
 
@@ -257,7 +256,7 @@ class XOHandler extends TransactionHandler {
       });
     } else {
       throw new InvalidTransaction(
-        `Action must be create, delete, addDriver or take not ${payload.action}`
+        `Action must be create, delete, or take not ${payload.action}`
       );
     }
   }

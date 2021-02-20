@@ -27,13 +27,10 @@ class XoState {
   }
 
   getGame(name) {
-    console.log("getGameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-
     return this._loadGames(name).then((games) => games.get(name));
   }
 
   setGame(name, game) {
-    console.log("setGameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     let address = _makeXoAddress(name);
 
     return this._loadGames(name)
@@ -43,7 +40,7 @@ class XoState {
       })
       .then((games) => {
         let data = _serialize(games);
-        console.log("data: "+data);
+
         this.addressCache.set(address, data);
         let entries = {
           [address]: data,
@@ -72,8 +69,6 @@ class XoState {
   }
 
   _loadGames(name) {
-    console.log("LoadGameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-
     let address = _makeXoAddress(name);
     if (this.addressCache.has(address)) {
       if (this.addressCache.get(address) === null) {
@@ -119,33 +114,27 @@ module.exports = {
 };
 
 const _deserialize = (data) => {
-  console.log ("_deserializeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   let gamesIterable = data
     .split("|")
     .map((x) => x.split(","))
     .map((x) => [
       x[0],
-      { name: x[0], board: x[1], state: x[2], player1: x[3], player2: x[4] , driversArr : x[5]},
+      { name: x[0], board: x[1], state: x[2], player1: x[3], player2: x[4] },
     ]);
   return new Map(gamesIterable);
 };
 
 const _serialize = (games) => {
-  console.log ("_serializeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   let gameStrs = [];
   for (let nameGame of games) {
     let name = nameGame[0];
     let game = nameGame[1];
-    console.log ("Middle1_serializeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-
     gameStrs.push(
-      [name, game.board, game.state, game.player1, game.player2 , game.driversArr].join(",")
+      [name, game.board, game.state, game.player1, game.player2].join(",")
     );
-    console.log ("Middle2_serializeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   }
 
   gameStrs.sort();
-  console.log ("End_serializeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 
   return Buffer.from(gameStrs.join("|"));
 };
