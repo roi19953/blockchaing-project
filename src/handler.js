@@ -286,8 +286,8 @@ class XOHandler extends TransactionHandler {
         let playerString = player.toString().substring(0, 6);
 
         var cityName = payload.name
-        var source = Math.round(payload.space / 10)
-        var target = Math.round(payload.space % 10)
+        var source = Math.floor(payload.space / 10)
+        var target = Math.floor(payload.space % 10)
         var cost = 0
         if(cityName === 'TelAviv') {
           cost = (target - source)*10
