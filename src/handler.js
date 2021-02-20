@@ -248,9 +248,11 @@ class XOHandler extends TransactionHandler {
         }
         let boardList = city.board.split("");
 
+        /*
         if (boardList[payload.space - 1] !== "-") {
           throw new InvalidTransaction("Invalid Action: Space already taken.");
         }
+        */
 /************************************************************************************************ */
         
 
