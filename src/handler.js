@@ -255,6 +255,9 @@ class XOHandler extends TransactionHandler {
         */
 /************************************************************************************************ */
         
+        console.log('board list: ' + boardList.toString())
+        console.log('loc1: '+Math.round(payload.space / 10) - 1)
+        console.log('loc2: '+Math.round(payload.space % 10) - 1)
         if (city.state === "P1-NEXT" && player === city.player1) {
           boardList[Math.round(payload.space / 10) - 1] = "-";//19 :1-->9
           boardList[Math.round(payload.space % 10) - 1] = "X";
