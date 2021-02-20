@@ -24,7 +24,7 @@ const { XO_NAMESPACE, XO_FAMILY, XoState } = require("./state");
 const { TransactionHandler } = require("sawtooth-sdk/processor/handler");
 const { InvalidTransaction } = require("sawtooth-sdk/processor/exceptions");
 
-const _gameToStr = (board, state, player1, player2, name , driversArr) => {
+const _gameToStr = (board, state, player1, player2, name /*, driversArr*/) => {
   board = board.replace(/-/g, " ");
   board = board.split("");
   let out = "";
@@ -38,7 +38,7 @@ const _gameToStr = (board, state, player1, player2, name , driversArr) => {
   out += `${board[3]} | ${board[4]} | ${board[5]} \n`;
   out += `---|---|--- \n`;
   out += `${board[6]} | ${board[7]} | ${board[8]} \n`;
-  out += `driversArr: ${driversArr[0]}\n`
+  //out += `driversArr: ${driversArr[0]}\n`
   return out;
 };
 
@@ -128,11 +128,11 @@ class XOHandler extends TransactionHandler {
 
         let createdGame = {
           name: payload.name,
-          //board: "---------",
+          board: "---------",
           state: "P1-NEXT",
           player1: "",
           player2: "",
-          driversArr : "",
+          //driversArr : "",
         };
 
         _display(
@@ -239,7 +239,7 @@ class XOHandler extends TransactionHandler {
               game.player1,
               game.player2,
               payload.name,
-              game.driversArr,
+              // game.driversArr,
             )
         );
 
