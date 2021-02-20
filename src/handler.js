@@ -228,7 +228,7 @@ class XOHandler extends TransactionHandler {
           );
         }
 
-        if (payload.space < 10 || payload.space > 90) {
+        if (payload.space < 10 || payload.space > 99) {
           throw new InvalidTransaction("Invalid space " + payload.space);
         }
 
