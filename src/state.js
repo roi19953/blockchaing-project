@@ -26,20 +26,20 @@ class XoState {
     this.timeout = 500; // Timeout in milliseconds
   }
 
-  getGame(name) {
-    return this._loadGames(name).then((games) => games.get(name));
+  getCity(name) {
+    return this._loadCitys(name).then((citys) => citys.get(name));
   }
 
-  setGame(name, game) {
+  setCity(name, city) {
     let address = _makeXoAddress(name);
 
-    return this._loadGames(name)
-      .then((games) => {
-        games.set(name, game);
-        return games;
+    return this._loadCitys(name)
+      .then((citys) => {
+        citys.set(name, city);
+        return citys;
       })
-      .then((games) => {
-        let data = _serialize(games);
+      .then((citys) => {
+        let data = _serialize(citys);
 
         this.addressCache.set(address, data);
         let entries = {
@@ -49,16 +49,16 @@ class XoState {
       });
   }
 
-  deleteGame(name) {
+  deleteCity(name) {
     let address = _makeXoAddress(name);
-    return this._loadGames(name).then((games) => {
-      games.delete(name);
+    return this._loadCitys(name).then((citys) => {
+      citys.delete(name);
 
-      if (games.size === 0) {
+      if (citys.size === 0) {
         this.addressCache.set(address, null);
         return this.context.deleteState([address], this.timeout);
       } else {
-        let data = _serialize(games);
+        let data = _serialize(citys);
         this.addressCache.set(address, data);
         let entries = {
           [address]: data,
@@ -68,7 +68,7 @@ class XoState {
     });
   }
 
-  _loadGames(name) {
+  _loadCitys(name) {
     let address = _makeXoAddress(name);
     if (this.addressCache.has(address)) {
       if (this.addressCache.get(address) === null) {
@@ -114,27 +114,27 @@ module.exports = {
 };
 
 const _deserialize = (data) => {
-  let gamesIterable = data
+  let citysIterable = data
     .split("|")
     .map((x) => x.split(","))
     .map((x) => [
       x[0],
       { name: x[0], board: x[1], state: x[2], player1: x[3], player2: x[4] },
     ]);
-  return new Map(gamesIterable);
+  return new Map(citysIterable);
 };
 
-const _serialize = (games) => {
-  let gameStrs = [];
-  for (let nameGame of games) {
-    let name = nameGame[0];
-    let game = nameGame[1];
-    gameStrs.push(
-      [name, game.board, game.state, game.player1, game.player2].join(",")
+const _serialize = (citys) => {
+  let cityStrs = [];
+  for (let nameCity of citys) {
+    let name = nameCity[0];
+    let city = nameCIty[1];
+    cityStrs.push(
+      [name, city.board, city.state, city.player1, city.player2].join(",")
     );
   }
 
-  gameStrs.sort();
+  cityStrs.sort();
 
-  return Buffer.from(gameStrs.join("|"));
+  return Buffer.from(cityStrs.join("|"));
 };

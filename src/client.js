@@ -66,34 +66,22 @@ const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
 const createTransaction = (payload, signer) => {
   console.log(payload);
   var player = 1
-  const [gameName, action, space] = payload.split(",");
-  console.log('gamename is : ' + gameName)
+  const [cityName, action, space] = payload.split(",");
+  console.log('cityName is : ' + cityName)
   console.log('action is : ' + action)
   console.log('space is : ' + space)
   console.log('player is : ' + player)
-  payload = gameName+','+action+','+space
+  payload = cityName+','+action+','+space
   console.log('payload is : ' + payload)
-    // var signerKey = arr[0];
-    // var batcherKey = arr[0];
-  // if (player=="1")
-  // {
-  //   var signerKey = arr[0];
-  //   var batcherKey = arr[1];
-  // } 
-  // else if (player=="2")
-  // {
-  //   var signerKey = arr[2];
-  //   var batcherKey = arr[3];
-  // }
-  // console.log('signer is : ' + signerKey)
-  // console.log('batcherKey is : ' + batcherKey)
+  
+
   const encoder = new TextEncoder("utf8");
   const payloadBytes = encoder.encode(payload);
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
     familyName: XO_FAMILY,
     familyVersion: "1.0",
-    inputs: [_makeXoAddress(gameName)],
-    outputs: [_makeXoAddress(gameName)],
+    inputs: [_makeXoAddress(cityName)],
+    outputs: [_makeXoAddress(cityName)],
     signerPublicKey: signer.getPublicKey().asHex(),
     // In this example, we're signing the batch with the same private key,
     // but the batch can be signed by another party, in which case, the
