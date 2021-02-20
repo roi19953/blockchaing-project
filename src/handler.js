@@ -256,12 +256,12 @@ class XOHandler extends TransactionHandler {
 /************************************************************************************************ */
         
         if (city.state === "P1-NEXT" && player === city.player1) {
-          boardList[payload.space / 10 - 1] = "-";//19 :1-->9
-          boardList[payload.space % 10 - 1] = "X";
+          boardList[Math.round(payload.space / 10) - 1] = "-";//19 :1-->9
+          boardList[Math.round(payload.space % 10) - 1] = "X";
           city.state = "P2-NEXT";
         } else if (city.state === "P2-NEXT" && player === city.player2) {
-          boardList[payload.space / 10 - 1] = "-";
-          boardList[payload.space % 10 - 1] = "O";
+          boardList[Math.round(payload.space / 10) - 1] = "-";
+          boardList[Math.round(payload.space % 10) - 1] = "O";
           city.state = "P1-NEXT";
         } else {
           console.log("state: " + city.state + "player1: " + city.player1 + "player2: " + city.player2 + "player: " + player)
@@ -283,8 +283,8 @@ class XOHandler extends TransactionHandler {
         let playerString = player.toString().substring(0, 6);
 
         var cityName = payload.name
-        var source = payload.space / 10 - 1
-        var target = payload.space % 10 - 1
+        var source = Math.round(payload.space / 10)
+        var target = Math.round(payload.space % 10)
         var cost = 0
         if(cityName === 'TelAviv') {
           cost = (target - source)*10
@@ -293,7 +293,7 @@ class XOHandler extends TransactionHandler {
         }
 
         _display(
-          `cost is: ${cost}, Player ${playerString} takes space: ${payload.space}\n\n` +
+          `Player ${playerString} takes space: ${payload.space}\n\n` +
             _cityToStr(
               city.board,
               city.state,
