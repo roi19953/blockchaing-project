@@ -255,9 +255,8 @@ class XOHandler extends TransactionHandler {
         */
 /************************************************************************************************ */
         
-
         if (city.state === "P1-NEXT" && player === city.player1) {
-          boardList[payload.space / 10 - 1] = "-";
+          boardList[payload.space / 10 - 1] = "-";//19 :1-->9
           boardList[payload.space % 10 - 1] = "X";
           city.state = "P2-NEXT";
         } else if (city.state === "P2-NEXT" && player === city.player2) {
