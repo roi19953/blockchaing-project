@@ -170,7 +170,7 @@ async function main_func() {
     }
     else
     {
-    signerToSend = signer2; 
+    signerToSend = signer1; 
     }
     count = count + 1;    
 
