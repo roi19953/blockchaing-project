@@ -24,12 +24,12 @@ const { XO_NAMESPACE, XO_FAMILY, XoState } = require("./state");
 const { TransactionHandler } = require("sawtooth-sdk/processor/handler");
 const { InvalidTransaction } = require("sawtooth-sdk/processor/exceptions");
 
-const _gameToStr = (board, state, player1, player2, name) => {
+const _cityToStr = (board, state, player1, player2, name) => {
   console.log('enter herererererere')
   board = board.replace(/-/g, " ");
   board = board.split("");
   let out = "";
-  out += `GAME: ${name}\n`;
+  out += `City: ${name}\n`;
   out += `PLAYER 1: ${player1.substring(0, 6)}\n`;
   out += `PLAYER 2: ${player2.substring(0, 6)}\n`;
   out += `STATE: ${state}\n`;
@@ -42,8 +42,8 @@ const _gameToStr = (board, state, player1, player2, name) => {
   return out;
 };
 
-const cityToStr = (game) => {
-  return 'city: ' + game.name + 'drivers: ' + game.drivers;
+const cityToStr = (city) => {
+  return 'city: ' + city.name + 'drivers: ' + city.drivers;
 }
 
 
@@ -125,33 +125,28 @@ class XOHandler extends TransactionHandler {
     let player = header.signerPublicKey;
 
     if (payload.action === "createCity") {
-      return xoState.getGame(payload.name).then((game) => {
+      return xoState.getCity(payload.name).then((city) => {
         console.log('enter create city handler')
-        if (game !== undefined) {
+        if (city !== undefined) {
           throw new InvalidTransaction("Invalid Action: City already exists.");
         }
 
-        // let createdCity = {
-        //   name : payload.name,
-        //   drivers: 'empty'
-        // }
-
         let createdCity = {
           name: payload.name,
-          drivers: 'empty'
-          // state: "P1-NEXT",
-          // player1: "",
-          // player2: "",
+          drivers: 'empty',
+          state: "P1-NEXT",
+          player1: "",
+          player2: "",
         };
 
         _display(
           `city ${payload.name} created`
         );
 
-        return xoState.setGame(payload.name, createdCity);
+        return xoState.setCity(payload.name, createdCity);
       });
     } else if (payload.action === "createDriver") {
-      return xoState.getGame(payload.name).then((game) => {
+      return xoState.getCity(payload.name).then((city) => {
         console.log('enter create driver hanlder')
         let createdCity = {
           name: payload.name,
@@ -161,10 +156,10 @@ class XOHandler extends TransactionHandler {
           `city created22`
         );
 
-        return xoState.setGame(payload.name, createdCity);
+        return xoState.setCity(payload.name, createdCity);
       });
     } else if (payload.action === "take") {
-      return xoState.getGame(payload.name).then((game) => {
+      return xoState.getCity(payload.name).then((city) => {
         try {
           parseInt(payload.space);
         } catch (err) {
@@ -177,7 +172,7 @@ class XOHandler extends TransactionHandler {
           throw new InvalidTransaction("Invalid space " + payload.space);
         }
 
-        if (game === undefined) {
+        if (city === undefined) {
           throw new InvalidTransaction(
             "Invalid Action: Take requires an existing game."
           );
