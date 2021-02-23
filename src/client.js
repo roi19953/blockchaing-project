@@ -7,35 +7,6 @@ const readline = require('readline');
 const XoPayload = require("./payload");
 
 
-// const context = createContext("secp256k1");
-
-// var privateKey = context.newRandomPrivateKey();
-// var cryptoFact = new CryptoFactory(context);
-// var signer = cryptoFact.newSigner(privateKey);
-// var signerPublicKey = signer.getPublicKey().asHex();
-// var batcherPublicKey = signer.getPublicKey().asHex();
-
-// var newArr1 = [signerPublicKey,batcherPublicKey]
-
-// console.log('new arr1:' + newArr1)
-
-// privateKey = context.newRandomPrivateKey();
-// cryptoFact = new CryptoFactory(context);
-// signer = cryptoFact.newSigner(privateKey);
-// var signerPublicKey2 = signer.getPublicKey().asHex();
-// var batcherPublicKey2 = signer.getPublicKey().asHex();
-
-// var newArr2 = [signerPublicKey2,batcherPublicKey2]
-// console.log('new arr2:' + newArr2)
-
-// function createKey1() {
-//   const context = createContext("secp256k1");
-//   const privateKey = context.newRandomPrivateKey();
-//   const cryptoFact = new CryptoFactory(context);
-//   const signer = cryptoFact.newSigner(privateKey);
-//   return signer.getPublicKey().asHex();
-// }
-
 function createSigner() {
   const context = createContext("secp256k1");
   const privateKey = context.newRandomPrivateKey();
@@ -43,13 +14,6 @@ function createSigner() {
   return cryptoFact.newSigner(privateKey);
 }
 
-// function createKey2() {
-//   const context2 = createContext("secp256k1");
-//   const privateKey2 = context2.newRandomPrivateKey();
-//   const cryptoFact2 = new CryptoFactory(context);
-//   const signer2 = cryptoFact2.newSigner(privateKey2);
-//   return signer2.getPublicKey().asHex();
-// }
 
 const _hash = (x) =>
   crypto
@@ -73,8 +37,7 @@ const createTransaction = (payload, signer) => {
   console.log('player is : ' + player)
   payload = cityName+','+action+','+space
   console.log('payload is : ' + payload)
-  
-
+ 
   const encoder = new TextEncoder("utf8");
   const payloadBytes = encoder.encode(payload);
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
@@ -101,7 +64,6 @@ const createTransaction = (payload, signer) => {
       .digest("hex"),
   }).finish();
 
-  // const signature = signer.sign(transactionHeaderBytes);
 
   const transaction = protobuf.Transaction.create({
     header: transactionHeaderBytes,
@@ -117,7 +79,6 @@ const createBatch = (transactions, signer) => {
     transactionIds: transactions.map((txn) => txn.headerSignature),
   }).finish();
 
-  // const signature = signer.sign(batchHeaderBytes);
 
   const batch = protobuf.Batch.create({
     header: batchHeaderBytes,
@@ -213,8 +174,6 @@ async function main_func() {
     }
     count = count + 1;    
 
-    // const arr = [signerPublicKey,batcherPublicKey];
-    // const arr = [signerPublicKey1,batcherPublicKey1];
     const batchToSend = createBatch([createTransaction(input, signerToSend)], signerToSend);
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
