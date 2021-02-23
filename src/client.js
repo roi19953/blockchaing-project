@@ -30,18 +30,26 @@ const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
 const createTransaction = (payload, signer) => {
   console.log(payload);
   var player = 1
-  const [action, type] = payload.split(",");
+  const [cityName, action, space] = payload.split(",");
+  console.log('cityName is : ' + cityName)
   console.log('action is : ' + action)
-  console.log('type is : ' + type)
+  console.log('space is : ' + space)
+  console.log('player is : ' + player)
+  payload = cityName+','+action+','+space
   console.log('payload is : ' + payload)
+<<<<<<< HEAD
  
+=======
+  
+
+>>>>>>> 6a2b5b205197f7442eb1ea78c080cc8a156882a5
   const encoder = new TextEncoder("utf8");
   const payloadBytes = encoder.encode(payload);
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
     familyName: XO_FAMILY,
     familyVersion: "1.0",
-    inputs: [_makeXoAddress("0")],
-    outputs: [_makeXoAddress("0")],
+    inputs: [_makeXoAddress(cityName)],
+    outputs: [_makeXoAddress(cityName)],
     signerPublicKey: signer.getPublicKey().asHex(),
     // In this example, we're signing the batch with the same private key,
     // but the batch can be signed by another party, in which case, the
@@ -161,4 +169,27 @@ async function main_func() {
 }
 
 main_func()
+
+// async function main_func2() {
+//     var city = "";
+//     while(city != "stop") { 
+
+//       //input
+//       async function askQuestion(query) {
+//         const rl = readline.createInterface({
+//             input: process.stdin,
+//             output: process.stdout,
+//         });
+    
+//         return new Promise(resolve => rl.question(query, ans => {
+//             rl.close();
+//             resolve(ans);
+//         }))
+//     }
+//     city = await askQuestion("enter city :")
+//     var source_x = parseInt(await askQuestion("enter source x :"))
+//     var source_y = parseInt(await askQuestion("enter source y :"))
+
+//   }
+// }
 
