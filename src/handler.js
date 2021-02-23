@@ -179,10 +179,10 @@ class XOHandler extends TransactionHandler {
         
 
         if (city.state === "P1-NEXT" && player === city.player1) {
-          boardList[payload.space - 1] = "C";
+          boardList[payload.space - 1] = "X";
           city.state = "P2-NEXT";
         } else if (city.state === "P2-NEXT" && player === city.player2) {
-          boardList[payload.space - 1] = "C";
+          boardList[payload.space - 1] = "O";
           city.state = "P1-NEXT";
         } else {
           console.log("state: " + city.state + "player1: " + city.player1 + "player2: " + city.player2 + "player: " + player)
