@@ -168,8 +168,27 @@ async function main_func() {
   signer1 = createSigner();
   signer2 = createSigner();
   var signerToSend;
+  var listClients = []
+  var listDrivers = []
+  var dCount =0;
+  var lCount =0;
   while(input != "stop") { 
-
+     
+    if(input.includes("addDriver"))
+    {
+       listDrivers.push(dCount);
+       dCount++;
+    }
+    if(input.includes("take"))
+    {
+       listClients.push(lCount);
+       lCount++;
+    }
+    if(input.includes("move"))
+    {
+      var input2 = await askQuestion("With which driver do you wanna ride?");
+      console.log("Driver with serial number "+ input2 + "will pick you up in 5 minuets");
+    }
     //input
     async function askQuestion(query) {
       const rl = readline.createInterface({
