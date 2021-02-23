@@ -155,7 +155,7 @@ async function main_func() {
     }
     count = count + 1;    
 
-    const batchToSend = createBatch([createTransaction(input, signer1)], signer1);
+    const batchToSend = createBatch([createTransaction(input, signerToSend)], signerToSend);
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();
