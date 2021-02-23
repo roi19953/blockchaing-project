@@ -37,12 +37,7 @@ const createTransaction = (payload, signer) => {
   console.log('player is : ' + player)
   payload = cityName+','+action+','+space
   console.log('payload is : ' + payload)
-<<<<<<< HEAD
  
-=======
-  
-
->>>>>>> 6a2b5b205197f7442eb1ea78c080cc8a156882a5
   const encoder = new TextEncoder("utf8");
   const payloadBytes = encoder.encode(payload);
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
@@ -160,7 +155,7 @@ async function main_func() {
     }
     count = count + 1;    
 
-    const batchToSend = createBatch([createTransaction(input, signer1)], signer1);
+    const batchToSend = createBatch([createTransaction(input, signerToSend)], signerToSend);
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
     }).finish();

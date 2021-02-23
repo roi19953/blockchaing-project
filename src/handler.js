@@ -178,21 +178,12 @@ class XOHandler extends TransactionHandler {
 /************************************************************************************************ */
         
 
-<<<<<<< HEAD
         if (game.state === "P1-NEXT" && player === game.player1) {
           boardList[payload.space - 1] = "C";
           game.state = "P2-NEXT";
         } else if (game.state === "P2-NEXT" && player === game.player2) {
           boardList[payload.space - 1] = "C";
           game.state = "P1-NEXT";
-=======
-        if (city.state === "P1-NEXT" && player === city.player1) {
-          boardList[payload.space - 1] = "X";
-          city.state = "P2-NEXT";
-        } else if (city.state === "P2-NEXT" && player === city.player2) {
-          boardList[payload.space - 1] = "O";
-          city.state = "P1-NEXT";
->>>>>>> 6a2b5b205197f7442eb1ea78c080cc8a156882a5
         } else {
           console.log("state: " + city.state + "player1: " + city.player1 + "player2: " + city.player2 + "player: " + player)
           throw new InvalidTransaction(
