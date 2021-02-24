@@ -133,7 +133,7 @@ class XOHandler extends TransactionHandler {
         };
 
         _display(
-          `Player ${player.toString().substring(0, 6)} created game ${
+          `Player ${player.toString().substring(0, 6)} created city ${
             payload.name
           }`
         );

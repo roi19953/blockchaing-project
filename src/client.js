@@ -200,24 +200,12 @@ async function main_func() {
   }
   input = await askQuestion("enter command :")
     
-    if (count%5==0) // To know which turn
+    if (count%2==0) // To know which turn
     {
     signerToSend = signer1;
     }
-    if (count%5==1) // To know which turn
-    {
+   else{
     signerToSend = signer2;
-    }
-    if (count%5==2) // To know which turn
-    {
-    signerToSend = signer3;
-    }
-    if (count%5==3) // To know which turn
-    {
-    signerToSend = signer4;
-    } if (count%5==4) // To know which turn
-    {
-    signerToSend = signer5;
     }
     count = count + 1;    
 
