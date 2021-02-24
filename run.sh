@@ -1,3 +1,3 @@
 git add .
-git commit -m "blalba"
+git commit -m "commit from bash"
 git push origin master

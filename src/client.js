@@ -7,6 +7,35 @@ const readline = require('readline');
 const XoPayload = require("./payload");
 
 
+// const context = createContext("secp256k1");
+
+// var privateKey = context.newRandomPrivateKey();
+// var cryptoFact = new CryptoFactory(context);
+// var signer = cryptoFact.newSigner(privateKey);
+// var signerPublicKey = signer.getPublicKey().asHex();
+// var batcherPublicKey = signer.getPublicKey().asHex();
+
+// var newArr1 = [signerPublicKey,batcherPublicKey]
+
+// console.log('new arr1:' + newArr1)
+
+// privateKey = context.newRandomPrivateKey();
+// cryptoFact = new CryptoFactory(context);
+// signer = cryptoFact.newSigner(privateKey);
+// var signerPublicKey2 = signer.getPublicKey().asHex();
+// var batcherPublicKey2 = signer.getPublicKey().asHex();
+
+// var newArr2 = [signerPublicKey2,batcherPublicKey2]
+// console.log('new arr2:' + newArr2)
+
+// function createKey1() {
+//   const context = createContext("secp256k1");
+//   const privateKey = context.newRandomPrivateKey();
+//   const cryptoFact = new CryptoFactory(context);
+//   const signer = cryptoFact.newSigner(privateKey);
+//   return signer.getPublicKey().asHex();
+// }
+
 function createSigner() {
   const context = createContext("secp256k1");
   const privateKey = context.newRandomPrivateKey();
@@ -14,6 +43,13 @@ function createSigner() {
   return cryptoFact.newSigner(privateKey);
 }
 
+// function createKey2() {
+//   const context2 = createContext("secp256k1");
+//   const privateKey2 = context2.newRandomPrivateKey();
+//   const cryptoFact2 = new CryptoFactory(context);
+//   const signer2 = cryptoFact2.newSigner(privateKey2);
+//   return signer2.getPublicKey().asHex();
+// }
 
 const _hash = (x) =>
   crypto
@@ -30,21 +66,34 @@ const _makeXoAddress = (x) => XO_NAMESPACE + _hash(x);
 const createTransaction = (payload, signer) => {
   console.log(payload);
   var player = 1
-  const [cityName, action, space] = payload.split(",");
-  console.log('cityName is : ' + cityName)
+  const [gameName, action, space] = payload.split(",");
+  console.log('gamename is : ' + gameName)
   console.log('action is : ' + action)
   console.log('space is : ' + space)
   console.log('player is : ' + player)
-  payload = cityName+','+action+','+space
+  payload = gameName+','+action+','+space
   console.log('payload is : ' + payload)
- 
+    // var signerKey = arr[0];
+    // var batcherKey = arr[0];
+  // if (player=="1")
+  // {
+  //   var signerKey = arr[0];
+  //   var batcherKey = arr[1];
+  // } 
+  // else if (player=="2")
+  // {
+  //   var signerKey = arr[2];
+  //   var batcherKey = arr[3];
+  // }
+  // console.log('signer is : ' + signerKey)
+  // console.log('batcherKey is : ' + batcherKey)
   const encoder = new TextEncoder("utf8");
   const payloadBytes = encoder.encode(payload);
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
     familyName: XO_FAMILY,
     familyVersion: "1.0",
-    inputs: [_makeXoAddress(cityName)],
-    outputs: [_makeXoAddress(cityName)],
+    inputs: [_makeXoAddress(gameName)],
+    outputs: [_makeXoAddress(gameName)],
     signerPublicKey: signer.getPublicKey().asHex(),
     // In this example, we're signing the batch with the same private key,
     // but the batch can be signed by another party, in which case, the
@@ -64,6 +113,7 @@ const createTransaction = (payload, signer) => {
       .digest("hex"),
   }).finish();
 
+  // const signature = signer.sign(transactionHeaderBytes);
 
   const transaction = protobuf.Transaction.create({
     header: transactionHeaderBytes,
@@ -79,6 +129,7 @@ const createBatch = (transactions, signer) => {
     transactionIds: transactions.map((txn) => txn.headerSignature),
   }).finish();
 
+  // const signature = signer.sign(batchHeaderBytes);
 
   const batch = protobuf.Batch.create({
     header: batchHeaderBytes,
@@ -129,27 +180,8 @@ async function main_func() {
   signer1 = createSigner();
   signer2 = createSigner();
   var signerToSend;
-  var listClients = []
-  var listDrivers = []
-  var dCount =0;
-  var lCount =0;
   while(input != "stop") { 
-     
-    if(input.includes("addDriver"))
-    {
-       listDrivers.push(dCount);
-       dCount++;
-    }
-    if(input.includes("take"))
-    {
-       listClients.push(lCount);
-       lCount++;
-    }
-    if(input.includes("move"))
-    {
-      var input2 = await askQuestion("With which driver do you wanna ride?");
-      console.log("Driver with serial number "+ input2 + "will pick you up in 5 minuets");
-    }
+
     //input
     async function askQuestion(query) {
       const rl = readline.createInterface({
@@ -174,6 +206,8 @@ async function main_func() {
     }
     count = count + 1;    
 
+    // const arr = [signerPublicKey,batcherPublicKey];
+    // const arr = [signerPublicKey1,batcherPublicKey1];
     const batchToSend = createBatch([createTransaction(input, signerToSend)], signerToSend);
     const batchListBytes = protobuf.BatchList.encode({
       batches: [batchToSend],
@@ -183,27 +217,4 @@ async function main_func() {
 }
 
 main_func()
-
-// async function main_func2() {
-//     var city = "";
-//     while(city != "stop") { 
-
-//       //input
-//       async function askQuestion(query) {
-//         const rl = readline.createInterface({
-//             input: process.stdin,
-//             output: process.stdout,
-//         });
-    
-//         return new Promise(resolve => rl.question(query, ans => {
-//             rl.close();
-//             resolve(ans);
-//         }))
-//     }
-//     city = await askQuestion("enter city :")
-//     var source_x = parseInt(await askQuestion("enter source x :"))
-//     var source_y = parseInt(await askQuestion("enter source y :"))
-
-//   }
-// }
 

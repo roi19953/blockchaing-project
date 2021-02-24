@@ -24,11 +24,11 @@ const { XO_NAMESPACE, XO_FAMILY, XoState } = require("./state");
 const { TransactionHandler } = require("sawtooth-sdk/processor/handler");
 const { InvalidTransaction } = require("sawtooth-sdk/processor/exceptions");
 
-const _cityToStr = (board, state, player1, player2, name /*, driversArr*/) => {
+const _gameToStr = (board, state, player1, player2, name) => {
   board = board.replace(/-/g, " ");
   board = board.split("");
   let out = "";
-  out += `City: ${name}\n`;
+  out += `GAME: ${name}\n`;
   out += `PLAYER 1: ${player1.substring(0, 6)}\n`;
   out += `PLAYER 2: ${player2.substring(0, 6)}\n`;
   out += `STATE: ${state}\n`;
@@ -38,7 +38,6 @@ const _cityToStr = (board, state, player1, player2, name /*, driversArr*/) => {
   out += `${board[3]} | ${board[4]} | ${board[5]} \n`;
   out += `---|---|--- \n`;
   out += `${board[6]} | ${board[7]} | ${board[8]} \n`;
-  //out += `driversArr: ${driversArr[0]}\n`
   return out;
 };
 
@@ -120,30 +119,29 @@ class XOHandler extends TransactionHandler {
     let player = header.signerPublicKey;
 
     if (payload.action === "create") {
-      return xoState.getCity(payload.name).then((city) => {
-        if (city !== undefined) {
-          throw new InvalidTransaction("Invalid Action: City already exists.");
+      return xoState.getGame(payload.name).then((game) => {
+        if (game !== undefined) {
+          throw new InvalidTransaction("Invalid Action: Game already exists.");
         }
 
-        let createdCity = {
+        let createdGame = {
           name: payload.name,
           board: "---------",
           state: "P1-NEXT",
           player1: "",
           player2: "",
-          //driversArr : "",
         };
 
         _display(
-          `Player ${player.toString().substring(0, 6)} created city ${
+          `Player ${player.toString().substring(0, 6)} created game ${
             payload.name
           }`
         );
 
-        return xoState.setCity(payload.name, createdCity);
+        return xoState.setGame(payload.name, createdGame);
       });
     } else if (payload.action === "take") {
-      return xoState.getCity(payload.name).then((city) => {
+      return xoState.getGame(payload.name).then((game) => {
         try {
           parseInt(payload.space);
         } catch (err) {
@@ -156,21 +154,21 @@ class XOHandler extends TransactionHandler {
           throw new InvalidTransaction("Invalid space " + payload.space);
         }
 
-        if (city === undefined) {
+        if (game === undefined) {
           throw new InvalidTransaction(
-            "Invalid Action: Take requires an existing city."
+            "Invalid Action: Take requires an existing game."
           );
         }
-        if (["P1-WIN", "P2-WIN", "TIE"].includes(city.state)) {
-          throw new InvalidTransaction("Invalid Action: City has ended.");
+        if (["P1-WIN", "P2-WIN", "TIE"].includes(game.state)) {
+          throw new InvalidTransaction("Invalid Action: Game has ended.");
         }
 
-        if (city.player1 === "") {
-          city.player1 = player;
-        } else if (city.player2 === "") {
-          city.player2 = player;
+        if (game.player1 === "") {
+          game.player1 = player;
+        } else if (game.player2 === "") {
+          game.player2 = player;
         }
-        let boardList = city.board.split("");
+        let boardList = game.board.split("");
 
         if (boardList[payload.space - 1] !== "-") {
           throw new InvalidTransaction("Invalid Action: Space already taken.");
@@ -178,137 +176,57 @@ class XOHandler extends TransactionHandler {
 /************************************************************************************************ */
         
 
-        if (city.state === "P1-NEXT" && player === city.player1) {
+        if (game.state === "P1-NEXT" && player === game.player1) {
           boardList[payload.space - 1] = "X";
-          city.state = "P2-NEXT";
-        } else if (city.state === "P2-NEXT" && player === city.player2) {
+          game.state = "P2-NEXT";
+        } else if (game.state === "P2-NEXT" && player === game.player2) {
           boardList[payload.space - 1] = "O";
-          city.state = "P1-NEXT";
+          game.state = "P1-NEXT";
         } else {
-          console.log("state: " + city.state + "player1: " + city.player1 + "player2: " + city.player2 + "player: " + player)
+          console.log("state: " + game.state + "player1: " + game.player1 + "player2: " + game.player2 + "player: " + player)
           throw new InvalidTransaction(
             `Not this player's turn: ${player.toString().substring(0, 6)}`
           );
         }//P1-NEXTplayer1: 02e2b2f9a5e5374a9f81f1bbd1911f80859e602137b94fd96ef00b3906e7e12571player2: 03e8ff142baa25d288122e95b42cef2c94d6b8a2836a6ea47288b80241ec64600f
 
-        city.board = boardList.join("");
+        game.board = boardList.join("");
 
-        if (_isWin(city.board, "X")) {
-          city.state = "P1-WIN";
-        } else if (_isWin(city.board, "O")) {
-          city.state = "P2-WIN";
-        } else if (city.board.search("-") === -1) {
-          city.state = "TIE";
+        if (_isWin(game.board, "X")) {
+          game.state = "P1-WIN";
+        } else if (_isWin(game.board, "O")) {
+          game.state = "P2-WIN";
+        } else if (game.board.search("-") === -1) {
+          game.state = "TIE";
         }
 
         let playerString = player.toString().substring(0, 6);
 
         _display(
           `Player ${playerString} takes space: ${payload.space}\n\n` +
-            _cityToStr(
-              city.board,
-              city.state,
-              city.player1,
-              city.player2,
+            _gameToStr(
+              game.board,
+              game.state,
+              game.player1,
+              game.player2,
               payload.name
             )
         );
 
-        return xoState.setCity(payload.name, city);
+        return xoState.setGame(payload.name, game);
       });
-    } 
-    else if ( payload.action === "move")
-    {
-      return xoState.getCity(payload.name).then((city) => {
-        try {
-          parseInt(payload.space);
-        } catch (err) {
+    } else if (payload.action === "delete") {
+      return xoState.getGame(payload.name).then((game) => {
+        if (game === undefined) {
           throw new InvalidTransaction(
-            "Space could not be converted as an integer."
+            `No game exists with name ${payload.name}: unable to delete`
           );
         }
-
-        if (payload.space < 10 || payload.space > 99) {
-          throw new InvalidTransaction("Invalid space " + payload.space);
-        }
-
-        if (city === undefined) {
-          throw new InvalidTransaction(
-            "Invalid Action: Take requires an existing city."
-          );
-        }
-        if (["P1-WIN", "P2-WIN", "TIE"].includes(city.state)) {
-          throw new InvalidTransaction("Invalid Action: City has ended.");
-        }
-
-        if (city.player1 === "") {
-          city.player1 = player;
-        } else if (city.player2 === "") {
-          city.player2 = player;
-        }
-        let boardList = city.board.split("");
-
-        /*
-        if (boardList[payload.space - 1] !== "-") {
-          throw new InvalidTransaction("Invalid Action: Space already taken.");
-        }
-        */
-/************************************************************************************************ */
-        
-        if (city.state === "P1-NEXT" && player === city.player1) {
-          boardList[Math.floor(payload.space / 10) - 1] = "-";//19 :1-->9
-          boardList[Math.floor(payload.space % 10) - 1] = "C";
-          city.state = "P2-NEXT";
-        } else if (city.state === "P2-NEXT" && player === city.player2) {
-          boardList[Math.floor(payload.space / 10) - 1] = "-";
-          boardList[Math.floor(payload.space % 10) - 1] = "C";
-          city.state = "P1-NEXT";
-        } else {
-          console.log("state: " + city.state + "player1: " + city.player1 + "player2: " + city.player2 + "player: " + player)
-          throw new InvalidTransaction(
-            `Not this player's turn: ${player.toString().substring(0, 6)}`
-          );
-        }//P1-NEXTplayer1: 02e2b2f9a5e5374a9f81f1bbd1911f80859e602137b94fd96ef00b3906e7e12571player2: 03e8ff142baa25d288122e95b42cef2c94d6b8a2836a6ea47288b80241ec64600f
-
-        city.board = boardList.join("");
-
-        if (_isWin(city.board, "X")) {
-          city.state = "P1-WIN";
-        } else if (_isWin(city.board, "O")) {
-          city.state = "P2-WIN";
-        } else if (city.board.search("-") === -1) {
-          city.state = "TIE";
-        }
-
-        let playerString = player.toString().substring(0, 6);
-
-        var cityName = payload.name
-        var source = Math.floor(payload.space / 10)
-        var target = Math.floor(payload.space % 10)
-        var cost = 0
-        if(cityName === 'TelAviv') {
-          cost = (target - source)*10
-        } else {
-          cost = (target-source)*5
-        }
-        if(cityName === 'KfarSava') {
-          cost = (target - source)*8
-        } else {
-          cost = (target-source)*3
-        }
-        _display(
-          `cost is: ${cost}, Player ${playerString} takes space: ${payload.space}\n\n` +
-            _cityToStr(
-              city.board,
-              city.state,
-              city.player1,
-              city.player2,
-              payload.name
-            )
-        );
-
-        return xoState.setCity(payload.name, city);
+        return xoState.deleteGame(payload.name);
       });
+    } else {
+      throw new InvalidTransaction(
+        `Action must be create, delete, or take not ${payload.action}`
+      );
     }
   }
 }
