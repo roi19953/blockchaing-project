@@ -341,19 +341,23 @@ class XOHandler extends TransactionHandler {
         console.log('board list: ' + boardList.toString())
         console.log('loc1: '+Math.floor(payload.space / 10) - 1)
         console.log('loc2: '+Math.floor(payload.space % 10) - 1)
-        if (game.state === "P1-NEXT" && player === game.player1) {
+        if (game.state === "P1-NEXT" && /*player === game.player1*/) {
           boardList[Math.floor(payload.space / 10) - 1] = "-";//19 :1-->9
           boardList[Math.floor(payload.space % 10) - 1] = "O";
           game.state = "P2-NEXT";
-        } else if (game.state === "P2-NEXT" && player === game.player2) {
+        } else if (game.state === "P2-NEXT" && /*player === game.player2*/) {
           boardList[Math.floor(payload.space / 10) - 1] = "-";
           boardList[Math.floor(payload.space % 10) - 1] = "O";
           game.state = "P1-NEXT";
         } else {
+          boardList[Math.floor(payload.space / 10) - 1] = "-";
+          boardList[Math.floor(payload.space % 10) - 1] = "O";
+          game.state = "P1-NEXT";
+
           console.log("state: " + game.state + "player1: " + game.player1 + "player2: " + game.player2 + "player: " + player)
-          throw new InvalidTransaction(
-            `Not this player's turn: ${player.toString().substring(0, 6)}`
-          );
+          // throw new InvalidTransaction(
+          //   `Not this player's turn: ${player.toString().substring(0, 6)}`
+          // );
         }//P1-NEXTplayer1: 02e2b2f9a5e5374a9f81f1bbd1911f80859e602137b94fd96ef00b3906e7e12571player2: 03e8ff142baa25d288122e95b42cef2c94d6b8a2836a6ea47288b80241ec64600f
 
         game.board = boardList.join("");
