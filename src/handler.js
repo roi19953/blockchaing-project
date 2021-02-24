@@ -260,11 +260,11 @@ class XOHandler extends TransactionHandler {
         console.log('loc2: '+Math.floor(payload.space % 10) - 1)
         if (city.state === "P1-NEXT" && player === city.player1) {
           boardList[Math.floor(payload.space / 10) - 1] = "-";//19 :1-->9
-          boardList[Math.floor(payload.space % 10) - 1] = "X";
+          boardList[Math.floor(payload.space % 10) - 1] = "C";
           city.state = "P2-NEXT";
         } else if (city.state === "P2-NEXT" && player === city.player2) {
           boardList[Math.floor(payload.space / 10) - 1] = "-";
-          boardList[Math.floor(payload.space % 10) - 1] = "O";
+          boardList[Math.floor(payload.space % 10) - 1] = "C";
           city.state = "P1-NEXT";
         } else {
           console.log("state: " + city.state + "player1: " + city.player1 + "player2: " + city.player2 + "player: " + player)
@@ -294,7 +294,11 @@ class XOHandler extends TransactionHandler {
         } else {
           cost = (target-source)*5
         }
-
+        if(cityName === 'KfarSava') {
+          cost = (target - source)*8
+        } else {
+          cost = (target-source)*3
+        }
         _display(
           `cost is: ${cost}, Player ${playerString} takes space: ${payload.space}\n\n` +
             _cityToStr(
