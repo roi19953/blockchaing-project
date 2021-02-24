@@ -223,7 +223,105 @@ class XOHandler extends TransactionHandler {
         }
         return xoState.deleteGame(payload.name);
       });
-    } else {
+    }
+    else if ( payload.action === "move")
+    {
+      return xoState.getCity(payload.name).then((city) => {
+        try {
+          parseInt(payload.space);
+        } catch (err) {
+          throw new InvalidTransaction(
+            "Space could not be converted as an integer."
+          );
+        }
+
+        if (payload.space < 10 || payload.space > 99) {
+          throw new InvalidTransaction("Invalid space " + payload.space);
+        }
+
+        if (city === undefined) {
+          throw new InvalidTransaction(
+            "Invalid Action: Take requires an existing city."
+          );
+        }
+        if (["P1-WIN", "P2-WIN", "TIE"].includes(city.state)) {
+          throw new InvalidTransaction("Invalid Action: City has ended.");
+        }
+
+        if (city.player1 === "") {
+          city.player1 = player;
+        } else if (city.player2 === "") {
+          city.player2 = player;
+        }
+        let boardList = city.board.split("");
+
+        /*
+        if (boardList[payload.space - 1] !== "-") {
+          throw new InvalidTransaction("Invalid Action: Space already taken.");
+        }
+        */
+/************************************************************************************************ */
+        
+        console.log('board list: ' + boardList.toString())
+        console.log('loc1: '+Math.floor(payload.space / 10) - 1)
+        console.log('loc2: '+Math.floor(payload.space % 10) - 1)
+        if (city.state === "P1-NEXT" && player === city.player1) {
+          boardList[Math.floor(payload.space / 10) - 1] = "-";//19 :1-->9
+          boardList[Math.floor(payload.space % 10) - 1] = "X";
+          city.state = "P2-NEXT";
+        } else if (city.state === "P2-NEXT" && player === city.player2) {
+          boardList[Math.floor(payload.space / 10) - 1] = "-";
+          boardList[Math.floor(payload.space % 10) - 1] = "O";
+          city.state = "P1-NEXT";
+        } else {
+          console.log("state: " + city.state + "player1: " + city.player1 + "player2: " + city.player2 + "player: " + player)
+          throw new InvalidTransaction(
+            `Not this player's turn: ${player.toString().substring(0, 6)}`
+          );
+        }//P1-NEXTplayer1: 02e2b2f9a5e5374a9f81f1bbd1911f80859e602137b94fd96ef00b3906e7e12571player2: 03e8ff142baa25d288122e95b42cef2c94d6b8a2836a6ea47288b80241ec64600f
+
+        city.board = boardList.join("");
+
+        if (_isWin(city.board, "X")) {
+          city.state = "P1-WIN";
+        } else if (_isWin(city.board, "O")) {
+          city.state = "P2-WIN";
+        } else if (city.board.search("-") === -1) {
+          city.state = "TIE";
+        }
+
+        let playerString = player.toString().substring(0, 6);
+
+        var cityName = payload.name
+        var source = Math.floor(payload.space / 10)
+        var target = Math.floor(payload.space % 10)
+        var cost = 0
+        if(cityName === 'TelAviv') {
+          cost = (target - source)*10
+        } else {
+          cost = (target-source)*5
+        }
+        if(cityName === 'KfarSava') {
+          cost = (target - source)*8
+        } else {
+          cost = (target-source)*3
+        }
+        _display(
+          `cost is: ${cost}, Player ${playerString} takes space: ${payload.space}\n\n` +
+            _cityToStr(
+              city.board,
+              city.state,
+              city.player1,
+              city.player2,
+              payload.name
+            )
+        );
+
+        return xoState.setCity(payload.name, city);
+      });
+    }
+    
+    else {
       throw new InvalidTransaction(
         `Action must be create, delete, or take not ${payload.action}`
       );
