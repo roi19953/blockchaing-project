@@ -179,6 +179,10 @@ async function main_func() {
   var signer1,signer2;
   signer1 = createSigner();
   signer2 = createSigner();
+  signer3 = createSigner();
+  signer4 = createSigner();
+  signer5 = createSigner();
+
   var signerToSend;
   while(input != "stop") { 
 
@@ -196,13 +200,24 @@ async function main_func() {
   }
   input = await askQuestion("enter command :")
     
-    if (count%2==0) // To know which turn
+    if (count%5==0) // To know which turn
     {
     signerToSend = signer1;
     }
-    else
+    if (count%5==1) // To know which turn
     {
-    signerToSend = signer2; 
+    signerToSend = signer2;
+    }
+    if (count%5==2) // To know which turn
+    {
+    signerToSend = signer3;
+    }
+    if (count%5==3) // To know which turn
+    {
+    signerToSend = signer4;
+    } if (count%5==4) // To know which turn
+    {
+    signerToSend = signer5;
     }
     count = count + 1;    
 
