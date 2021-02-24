@@ -226,7 +226,7 @@ class XOHandler extends TransactionHandler {
     }
     else if ( payload.action === "move")
     {
-      return xoState.getCity(payload.name).then((city) => {
+      return xoState.getGame(payload.name).then((game) => {
         try {
           parseInt(payload.space);
         } catch (err) {
@@ -239,21 +239,21 @@ class XOHandler extends TransactionHandler {
           throw new InvalidTransaction("Invalid space " + payload.space);
         }
 
-        if (city === undefined) {
+        if (game === undefined) {
           throw new InvalidTransaction(
             "Invalid Action: Take requires an existing city."
           );
         }
-        if (["P1-WIN", "P2-WIN", "TIE"].includes(city.state)) {
+        if (["P1-WIN", "P2-WIN", "TIE"].includes(game.state)) {
           throw new InvalidTransaction("Invalid Action: City has ended.");
         }
 
-        if (city.player1 === "") {
-          city.player1 = player;
-        } else if (city.player2 === "") {
-          city.player2 = player;
+        if (game.player1 === "") {
+          game.player1 = player;
+        } else if (game.player2 === "") {
+          game.player2 = player;
         }
-        let boardList = city.board.split("");
+        let boardList = game.board.split("");
 
         /*
         if (boardList[payload.space - 1] !== "-") {
@@ -265,29 +265,29 @@ class XOHandler extends TransactionHandler {
         console.log('board list: ' + boardList.toString())
         console.log('loc1: '+Math.floor(payload.space / 10) - 1)
         console.log('loc2: '+Math.floor(payload.space % 10) - 1)
-        if (city.state === "P1-NEXT" && player === city.player1) {
+        if (game.state === "P1-NEXT" && player === game.player1) {
           boardList[Math.floor(payload.space / 10) - 1] = "-";//19 :1-->9
           boardList[Math.floor(payload.space % 10) - 1] = "X";
-          city.state = "P2-NEXT";
-        } else if (city.state === "P2-NEXT" && player === city.player2) {
+          game.state = "P2-NEXT";
+        } else if (game.state === "P2-NEXT" && player === game.player2) {
           boardList[Math.floor(payload.space / 10) - 1] = "-";
           boardList[Math.floor(payload.space % 10) - 1] = "O";
-          city.state = "P1-NEXT";
+          game.state = "P1-NEXT";
         } else {
-          console.log("state: " + city.state + "player1: " + city.player1 + "player2: " + city.player2 + "player: " + player)
+          console.log("state: " + game.state + "player1: " + game.player1 + "player2: " + game.player2 + "player: " + player)
           throw new InvalidTransaction(
             `Not this player's turn: ${player.toString().substring(0, 6)}`
           );
         }//P1-NEXTplayer1: 02e2b2f9a5e5374a9f81f1bbd1911f80859e602137b94fd96ef00b3906e7e12571player2: 03e8ff142baa25d288122e95b42cef2c94d6b8a2836a6ea47288b80241ec64600f
 
-        city.board = boardList.join("");
+        game.board = boardList.join("");
 
-        if (_isWin(city.board, "X")) {
-          city.state = "P1-WIN";
-        } else if (_isWin(city.board, "O")) {
-          city.state = "P2-WIN";
-        } else if (city.board.search("-") === -1) {
-          city.state = "TIE";
+        if (_isWin(game.board, "X")) {
+          game.state = "P1-WIN";
+        } else if (_isWin(game.board, "O")) {
+          game.state = "P2-WIN";
+        } else if (game.board.search("-") === -1) {
+          game.state = "TIE";
         }
 
         let playerString = player.toString().substring(0, 6);
@@ -308,16 +308,16 @@ class XOHandler extends TransactionHandler {
         }
         _display(
           `cost is: ${cost}, Player ${playerString} takes space: ${payload.space}\n\n` +
-            _cityToStr(
-              city.board,
-              city.state,
-              city.player1,
-              city.player2,
+            _gameToStr(
+              game.board,
+              game.state,
+              game.player1,
+              game.player2,
               payload.name
             )
         );
 
-        return xoState.setCity(payload.name, city);
+        return xoState.setGame(payload.name, game);
       });
     }
     
