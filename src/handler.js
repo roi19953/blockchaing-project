@@ -323,6 +323,7 @@ class XOHandler extends TransactionHandler {
 
         return xoState.setGame(payload.name, game);
       });
+    }
     else {
       throw new InvalidTransaction(
         `Action must be create, delete, or take not ${payload.action}`
