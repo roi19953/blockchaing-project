@@ -267,15 +267,15 @@ class XOHandler extends TransactionHandler {
         console.log('loc2: '+Math.floor(payload.space % 10) - 1)
         if (game.state === "P1-NEXT" /*&& player === game.player1*/) {
           boardList[Math.floor(payload.space / 10) - 1] = "-";//19 :1-->9
-          boardList[Math.floor(payload.space % 10) - 1] = "O";
+          boardList[Math.floor(payload.space % 10) - 1] = "X";
           game.state = "P2-NEXT";
         } else if (game.state === "P2-NEXT" /*&& player === game.player2*/) {
           boardList[Math.floor(payload.space / 10) - 1] = "-";
-          boardList[Math.floor(payload.space % 10) - 1] = "O";
+          boardList[Math.floor(payload.space % 10) - 1] = "X";
           game.state = "P1-NEXT";
         } else {
           boardList[Math.floor(payload.space / 10) - 1] = "-";
-          boardList[Math.floor(payload.space % 10) - 1] = "O";
+          boardList[Math.floor(payload.space % 10) - 1] = "X";
           game.state = "P1-NEXT";
 
           console.log("state: " + game.state + "player1: " + game.player1 + "player2: " + game.player2 + "player: " + player)
