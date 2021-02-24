@@ -341,11 +341,11 @@ class XOHandler extends TransactionHandler {
         console.log('board list: ' + boardList.toString())
         console.log('loc1: '+Math.floor(payload.space / 10) - 1)
         console.log('loc2: '+Math.floor(payload.space % 10) - 1)
-        if (game.state === "P1-NEXT" && /*player === game.player1*/) {
+        if (game.state === "P1-NEXT" /*&& player === game.player1*/) {
           boardList[Math.floor(payload.space / 10) - 1] = "-";//19 :1-->9
           boardList[Math.floor(payload.space % 10) - 1] = "O";
           game.state = "P2-NEXT";
-        } else if (game.state === "P2-NEXT" && /*player === game.player2*/) {
+        } else if (game.state === "P2-NEXT" /*&& player === game.player2*/) {
           boardList[Math.floor(payload.space / 10) - 1] = "-";
           boardList[Math.floor(payload.space % 10) - 1] = "O";
           game.state = "P1-NEXT";
