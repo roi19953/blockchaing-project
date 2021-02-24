@@ -179,10 +179,6 @@ async function main_func() {
   var signer1,signer2;
   signer1 = createSigner();
   signer2 = createSigner();
-  signer3 = createSigner();
-  signer4 = createSigner();
-  signer5 = createSigner();
-
   var signerToSend;
   while(input != "stop") { 
 
@@ -204,8 +200,9 @@ async function main_func() {
     {
     signerToSend = signer1;
     }
-   else{
-    signerToSend = signer2;
+    else
+    {
+    signerToSend = signer2; 
     }
     count = count + 1;    
 
