@@ -224,7 +224,7 @@ class XOHandler extends TransactionHandler {
         return xoState.deleteGame(payload.name);
       });
     }
-    else if (payload.action === "take1") {
+    else if (payload.action === "take") {
       return xoState.getGame(payload.name).then((game) => {
         try {
           parseInt(payload.space);
@@ -261,7 +261,7 @@ class XOHandler extends TransactionHandler {
         
 
         if (game.state === "P1-NEXT" && player === game.player1) {
-          boardList[payload.space - 1] = "X";
+          boardList[payload.space - 1] = "O";
           game.state = "P2-NEXT";
         } else if (game.state === "P2-NEXT" && player === game.player2) {
           boardList[payload.space - 1] = "O";
@@ -343,7 +343,7 @@ class XOHandler extends TransactionHandler {
         console.log('loc2: '+Math.floor(payload.space % 10) - 1)
         if (game.state === "P1-NEXT" && player === game.player1) {
           boardList[Math.floor(payload.space / 10) - 1] = "-";//19 :1-->9
-          boardList[Math.floor(payload.space % 10) - 1] = "X";
+          boardList[Math.floor(payload.space % 10) - 1] = "O";
           game.state = "P2-NEXT";
         } else if (game.state === "P2-NEXT" && player === game.player2) {
           boardList[Math.floor(payload.space / 10) - 1] = "-";
